@@ -5,9 +5,14 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 
+/**
+ * Class to load and handle HTMl files
+ * 
+ * @author Harystolho
+ */
 public class HTMLLoader {
 
-	private static final String EMPTY_HTML = "<html><head></head><body><p>Couldn't find the file</p></body></html>";
+	public static final String EMPTY_HTML = "<html><head></head><body><p>Couldn't find the file</p></body></html>";
 
 	/**
 	 * Reads the HTML page from a file

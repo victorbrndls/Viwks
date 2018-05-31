@@ -1,11 +1,5 @@
 package com.harystolho.application;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
-
 import com.harystolho.html.HTMLLoader;
 
 import javafx.application.Application;
