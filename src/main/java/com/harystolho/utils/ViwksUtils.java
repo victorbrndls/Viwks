@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 public class ViwksUtils {
 
-	public static final String STYLE_CSS = "file:src/main/resources/css/style.css";
+	public static final String STYLE_CSS = "file:src/main/resources/css/";
 
 	private static Logger logger;
 	private static ExecutorService executor;

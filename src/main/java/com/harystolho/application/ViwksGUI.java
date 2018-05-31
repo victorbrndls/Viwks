@@ -1,8 +1,11 @@
 package com.harystolho.application;
 
+import javax.swing.text.Position.Bias;
+
 import org.w3c.dom.Document;
 
 import com.harystolho.html.HTMLLoader;
+import com.harystolho.html.JavaBridge;
 import com.harystolho.utils.ViwksUtils;
 
 import javafx.application.Application;
@@ -11,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import netscape.javascript.JSObject;
 
 /**
  * This class creates the GUI and loads the index.html file into it.
@@ -51,7 +55,8 @@ public class ViwksGUI extends Application {
 		// Loads the main HTML into the engine
 		engine.loadContent(HTMLLoader.loadHTML("index.html"));
 		// Loads CSS
-		engine.setUserStyleSheetLocation(ViwksUtils.STYLE_CSS);
+		engine.setUserStyleSheetLocation(ViwksUtils.STYLE_CSS + "style.css");
+		engine.setUserStyleSheetLocation(ViwksUtils.STYLE_CSS + "bootstrap.css");
 
 		addEngineListener();
 
@@ -63,9 +68,19 @@ public class ViwksGUI extends Application {
 	 */
 	private void addEngineListener() {
 		engine.getLoadWorker().stateProperty().addListener((obs, oldValue, newValue) -> {
+
 			if (newValue == Worker.State.SUCCEEDED) {
 				window.show();
 			}
+
+			// Retrieves the window object from the DOM
+			JSObject DOMWindow = (JSObject) engine.executeScript("window");
+
+			DOMWindow.setMember("java", new JavaBridge());
+
+			// Executes the init() method in the page
+			engine.executeScript("init();");
+
 		});
 	}
 
