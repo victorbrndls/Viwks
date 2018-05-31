@@ -1,6 +1,6 @@
 package com.harystolho;
 
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
@@ -12,10 +12,8 @@ import com.harystolho.html.HTMLLoader;
 public class GUITest {
 
 	@Test
-	public void checkIfMainHtmlExists() {
+	public void mainHTMLExists() {
 		assertNotEquals(HTMLLoader.loadHTML("index.html"), HTMLLoader.EMPTY_HTML);
 	}
-	
-	
-	
+
 }

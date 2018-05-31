@@ -1,5 +1,9 @@
 body{
-	height: 50.0px;
-	width: 50.0px;
-	background-color: green;
+	margin: 0;
+
+}
+
+header{
+	height: 60px;
+	background-color: black;
 }

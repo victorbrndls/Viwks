@@ -5,13 +5,15 @@ import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 /**
- * A Utility class for Viwks
+ * A Utility class for the application
  * 
  * @author Harystolho
  *
  */
 
 public class ViwksUtils {
+
+	public static final String STYLE_CSS = "file:src/main/resources/css/style.css";
 
 	private static Logger logger;
 	private static ExecutorService executor;

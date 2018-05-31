@@ -17,8 +17,9 @@ public class Main {
 		// Initializes the logger and a thread pool
 		ViwksUtils.init();
 
-		// Initializes the GUI
+		// Creates a GUI instance
 		viwks = new ViwksGUI();
+		// Initialize the GUI
 		viwks.init(args);
 
 	}
