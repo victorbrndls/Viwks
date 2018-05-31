@@ -6,6 +6,8 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import com.harystolho.html.HTMLLoader;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.web.WebEngine;
@@ -21,13 +23,15 @@ import javafx.stage.Stage;
 
 public class ViwksGUI extends Application {
 
+	private Stage window;
 	private WebView view;
 	private WebEngine engine;
 
 	/**
 	 * Creates a new window and loads the main components.
 	 */
-	private void loadGUI(Stage window) {
+	private void loadGUI(Stage stage) {
+		window = stage;
 		window.setTitle("Viwks");
 		window.setHeight(500);
 		window.setWidth(700);
@@ -40,22 +44,23 @@ public class ViwksGUI extends Application {
 		window.show();
 	}
 
+	/**
+	 * Creates the engine and displays the HTML
+	 */
 	private void loadWebDocument() {
 		engine = view.getEngine();
 
-		engine.loadContent(loadHTML());
-
+		// Loads HTML into page
+		engine.loadContent(HTMLLoader.loadHTML("index.html"));
+		// Loads CSS
+		engine.setUserStyleSheetLocation("file:src/main/resources/css/style.css");
 	}
 
-	private String loadHTML() {
-		try {
-			return FileUtils.readFileToString(new File("config"), "UTF-8");
-		} catch (IOException e) {
-			e.printStackTrace();
-			return "";
-		}
-	}
-
+	/**
+	 * Creates the main Web Scene, where the content is displayed.
+	 * 
+	 * @return a {@link Scene}
+	 */
 	private Scene createMainScene() {
 		view = new WebView();
 		return new Scene(view);
@@ -66,6 +71,11 @@ public class ViwksGUI extends Application {
 		loadGUI(window);
 	}
 
+	/**
+	 * Method used to start the application from another class
+	 * 
+	 * @param args
+	 */
 	public void init(String... args) {
 		launch(args);
 	}
