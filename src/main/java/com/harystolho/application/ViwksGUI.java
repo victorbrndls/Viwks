@@ -1,24 +1,19 @@
 package com.harystolho.application;
 
-import org.w3c.dom.Document;
+import java.io.IOException;
+import java.net.URL;
+import java.util.logging.Level;
 
-import com.harystolho.html.HTMLLoader;
-import com.harystolho.html.JavaBridge;
 import com.harystolho.utils.ViwksUtils;
 
 import javafx.application.Application;
-import javafx.concurrent.Worker;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Box;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import netscape.javascript.JSObject;
 
 /**
- * This class creates the GUI and loads the index.html file into it.
+ * Creates the GUI interface for this application
  * 
  * @author Harystolho
  *
@@ -27,13 +22,6 @@ import netscape.javascript.JSObject;
 public class ViwksGUI extends Application {
 
 	private Stage window;
-	// The page the user chooses
-	private WebView pageView;
-	// The application interface view
-	private WebView applicationView;
-	private WebEngine appWebEngine;
-	private WebEngine pageWebEngine;
-	private Document appDocument;
 
 	/**
 	 * Creates a new window and loads the main components.
@@ -41,77 +29,37 @@ public class ViwksGUI extends Application {
 	private void loadGUI(Stage stage) {
 		window = stage;
 		window.setTitle("Viwks");
-		window.setHeight(720);
+		window.setHeight(820);
 		window.setWidth(1280);
 
-		Scene scene = createMainScene();
+		// Creates a new Scene from a fxml file
+		Scene scene = loadGUIFromFXML();
+
+		scene.getStylesheets().add(ViwksUtils.RESOURCES + "style.css");
+
 		window.setScene(scene);
 
-		loadWebDocument();
-
+		window.show();
 	}
 
 	/**
-	 * Creates the engine and displays the HTML
-	 */
-	private void loadWebDocument() {
-		appWebEngine = applicationView.getEngine();
-		pageWebEngine = pageView.getEngine();
-
-		// Loads the application interface
-		appWebEngine.loadContent(HTMLLoader.loadHTML("index.html"));
-		// Loads CSS
-		appWebEngine.setUserStyleSheetLocation(ViwksUtils.STYLE_CSS + "style.css");
-		appWebEngine.setUserStyleSheetLocation(ViwksUtils.STYLE_CSS + "bootstrap.css");
-
-		// Loads an empty website
-		pageWebEngine.load("https://www.google.com/");
-
-		addAppEngineListener();
-
-	}
-
-	/**
-	 * This listener is called when the LoadWorker is changed, after the page loads
-	 * it calls the method {@code window.show();}
-	 */
-	private void addAppEngineListener() {
-		appWebEngine.getLoadWorker().stateProperty().addListener((obs, oldValue, newValue) -> {
-
-			if (newValue == Worker.State.SUCCEEDED) {
-				window.show();
-			}
-
-			// Retrieves the window object from the DOM
-			JSObject DOMWindow = (JSObject) appWebEngine.executeScript("window");
-
-			DOMWindow.setMember("java", new JavaBridge());
-
-			// Executes the init() method in the page
-			appWebEngine.executeScript("init();");
-
-		});
-	}
-
-	/**
-	 * Creates the main Web Scene, where the content is displayed.
+	 * Loads the fxml from the file
 	 * 
-	 * @return a {@link Scene}
+	 * @return Scene
 	 */
-	private Scene createMainScene() {
-		pageView = new WebView();
-		applicationView = new WebView();
+	private Scene loadGUIFromFXML() {
 
-		// Divides the window in 2
-		HBox box = new HBox();
+		Scene scene = null;
 
-		box.getChildren().addAll(pageView, applicationView);
+		try {
+			BorderPane pane = FXMLLoader.load(new URL(ViwksUtils.RESOURCES + "main.fxml"));
+			scene = new Scene(pane);
+		} catch (IOException e) {
+			ViwksUtils.getLogger().log(Level.SEVERE, "Couldn't load the main.fxml file");
+			e.printStackTrace();
+		}
 
-		pageView.setMinWidth(0.7 * window.getWidth());
-
-		applicationView.setMinWidth(0.3 * window.getWidth());
-
-		return new Scene(box);
+		return scene;
 	}
 
 	public Stage getWindow() {
