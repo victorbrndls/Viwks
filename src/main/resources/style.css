@@ -1,3 +1,16 @@
 #content, #list{
 	-fx-background-color: #5e5e5e;
 }
+
+#list{
+
+}
+
+#urlInput{
+	-fx-background-color: #414141;
+}
+
+#configuration{
+	-fx-background-color: #414141;
+	-fx-background-radius: 5px;
+}

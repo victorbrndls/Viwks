@@ -1,9 +1,12 @@
 package com.harystolho.application;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 
+import com.harystolho.controllers.MainController;
 import com.harystolho.utils.ViwksUtils;
 
 import javafx.application.Application;
@@ -23,14 +26,17 @@ public class ViwksGUI extends Application {
 
 	private Stage window;
 
+	private MainController controller;
+
 	/**
 	 * Creates a new window and loads the main components.
 	 */
 	private void loadGUI(Stage stage) {
 		window = stage;
 		window.setTitle("Viwks");
-		window.setHeight(820);
-		window.setWidth(1280);
+
+		window.setWidth(1200);
+		window.setHeight(700);
 
 		// Creates a new Scene from a fxml file
 		Scene scene = loadGUIFromFXML();
@@ -52,14 +58,22 @@ public class ViwksGUI extends Application {
 		Scene scene = null;
 
 		try {
-			BorderPane pane = FXMLLoader.load(new URL(ViwksUtils.RESOURCES + "main.fxml"));
-			scene = new Scene(pane);
+			FXMLLoader loader = new FXMLLoader();
+			BorderPane pane = loader.load(new URL(ViwksUtils.RESOURCES + "main.fxml"));
+			controller = loader.getController();
 		} catch (IOException e) {
 			ViwksUtils.getLogger().log(Level.SEVERE, "Couldn't load the main.fxml file");
 			e.printStackTrace();
 		}
 
 		return scene;
+	}
+
+	public MainController getController() {
+		if (this.controller != null) {
+			return this.controller;
+		}
+		throw new NullPointerException("The controller object is null");
 	}
 
 	public Stage getWindow() {
