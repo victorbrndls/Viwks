@@ -24,7 +24,7 @@ public class ViwksUtils {
 	public static void init() {
 
 		logger = Logger.getLogger("Viwks");
-		executor = Executors.newFixedThreadPool(10);
+		executor = Executors.newFixedThreadPool(5);
 	}
 
 	public static Logger getLogger() {

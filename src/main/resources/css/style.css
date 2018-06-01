@@ -6,11 +6,6 @@ body {
     box-sizing: content-box;
 }
 
-header {
-    height: 60px;
-    background-color: greenyellow;
-}
-
 /* Small devices (landscape phones, 576px and up)*/
 @media (min-width: 576px) {
 

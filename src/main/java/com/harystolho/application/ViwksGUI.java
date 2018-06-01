@@ -1,7 +1,5 @@
 package com.harystolho.application;
 
-import javax.swing.text.Position.Bias;
-
 import org.w3c.dom.Document;
 
 import com.harystolho.html.HTMLLoader;
@@ -11,6 +9,9 @@ import com.harystolho.utils.ViwksUtils;
 import javafx.application.Application;
 import javafx.concurrent.Worker;
 import javafx.scene.Scene;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Box;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -26,9 +27,13 @@ import netscape.javascript.JSObject;
 public class ViwksGUI extends Application {
 
 	private Stage window;
-	private WebView view;
-	private WebEngine engine;
-	private Document document;
+	// The page the user chooses
+	private WebView pageView;
+	// The application interface view
+	private WebView applicationView;
+	private WebEngine appWebEngine;
+	private WebEngine pageWebEngine;
+	private Document appDocument;
 
 	/**
 	 * Creates a new window and loads the main components.
@@ -43,43 +48,47 @@ public class ViwksGUI extends Application {
 		window.setScene(scene);
 
 		loadWebDocument();
+
 	}
 
 	/**
 	 * Creates the engine and displays the HTML
 	 */
 	private void loadWebDocument() {
-		engine = view.getEngine();
-		document = engine.getDocument();
+		appWebEngine = applicationView.getEngine();
+		pageWebEngine = pageView.getEngine();
 
-		// Loads the main HTML into the engine
-		engine.loadContent(HTMLLoader.loadHTML("index.html"));
+		// Loads the application interface
+		appWebEngine.loadContent(HTMLLoader.loadHTML("index.html"));
 		// Loads CSS
-		engine.setUserStyleSheetLocation(ViwksUtils.STYLE_CSS + "style.css");
-		engine.setUserStyleSheetLocation(ViwksUtils.STYLE_CSS + "bootstrap.css");
+		appWebEngine.setUserStyleSheetLocation(ViwksUtils.STYLE_CSS + "style.css");
+		appWebEngine.setUserStyleSheetLocation(ViwksUtils.STYLE_CSS + "bootstrap.css");
 
-		addEngineListener();
+		// Loads an empty website
+		pageWebEngine.load("https://www.google.com/");
+
+		addAppEngineListener();
 
 	}
 
 	/**
-	 * This listener is called when the LoadWorker is changed, after it loads it
-	 * calls the method {@code window.show();}
+	 * This listener is called when the LoadWorker is changed, after the page loads
+	 * it calls the method {@code window.show();}
 	 */
-	private void addEngineListener() {
-		engine.getLoadWorker().stateProperty().addListener((obs, oldValue, newValue) -> {
+	private void addAppEngineListener() {
+		appWebEngine.getLoadWorker().stateProperty().addListener((obs, oldValue, newValue) -> {
 
 			if (newValue == Worker.State.SUCCEEDED) {
 				window.show();
 			}
 
 			// Retrieves the window object from the DOM
-			JSObject DOMWindow = (JSObject) engine.executeScript("window");
+			JSObject DOMWindow = (JSObject) appWebEngine.executeScript("window");
 
 			DOMWindow.setMember("java", new JavaBridge());
 
 			// Executes the init() method in the page
-			engine.executeScript("init();");
+			appWebEngine.executeScript("init();");
 
 		});
 	}
@@ -90,8 +99,19 @@ public class ViwksGUI extends Application {
 	 * @return a {@link Scene}
 	 */
 	private Scene createMainScene() {
-		view = new WebView();
-		return new Scene(view);
+		pageView = new WebView();
+		applicationView = new WebView();
+
+		// Divides the window in 2
+		HBox box = new HBox();
+
+		box.getChildren().addAll(pageView, applicationView);
+
+		pageView.setMinWidth(0.7 * window.getWidth());
+
+		applicationView.setMinWidth(0.3 * window.getWidth());
+
+		return new Scene(box);
 	}
 
 	public Stage getWindow() {

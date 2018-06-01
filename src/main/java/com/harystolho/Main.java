@@ -4,7 +4,7 @@ import com.harystolho.application.ViwksGUI;
 import com.harystolho.utils.ViwksUtils;
 
 /**
- * A Simple JavaFX application at the moment.
+ * An application to get information from web pages.
  * 
  * @author Harystolho
  */
