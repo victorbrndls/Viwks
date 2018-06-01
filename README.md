@@ -1,6 +1,6 @@
 # Viwks
 
-An Application to get data from websites periodicaly.
+An Application to get data from websites periodically.
 
 ## Features
 Fast and light-weight.
