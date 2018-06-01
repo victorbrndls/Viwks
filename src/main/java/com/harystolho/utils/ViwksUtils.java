@@ -16,7 +16,7 @@ public class ViwksUtils {
 	public static final String RESOURCES = "file:src/main/resources/";
 
 	private static Logger logger;
-	private static ExecutorService executor;
+	private static ExecutorService executor; // TODO shutdown on close
 
 	/**
 	 * Initializes the logger and a thread pool
