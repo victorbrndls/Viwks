@@ -1,16 +1,43 @@
-#content, #list{
-	-fx-background-color: #5e5e5e;
+#content {
+    -fx-background-color: rgba(0, 0, 0, 0.14);
 }
 
-#list{
+#urlInput, #loadPage {
+    -fx-background-color: rgba(0, 0, 0, 0.24);
+}
+
+#list {
+    -fx-background-color: rgba(0, 0, 0, 0.24);
+    -fx-background-radius: 5px;
+}
+
+#list:selected {
+    -fx-background-color: red;
+}
+
+#list .list-cell{
+    -fx-background-color: rgba(0, 0, 0, 0.15);
+    -fx-text-fill: white;
+}
+
+#list .cell:selected{
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+
+#urlInput {
 
 }
 
-#urlInput{
-	-fx-background-color: #414141;
+#separator .line{
+    -fx-border-width: 1px;
+    -fx-border-color: rgba(0, 0, 0, 0.26);
 }
 
-#configuration{
-	-fx-background-color: #414141;
-	-fx-background-radius: 5px;
+#configuration {
+    -fx-background-radius: 5px;
+}
+
+#loadPage {
+
 }
