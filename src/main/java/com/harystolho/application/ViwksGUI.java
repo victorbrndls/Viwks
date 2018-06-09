@@ -1,18 +1,17 @@
 package com.harystolho.application;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 
+import com.harystolho.controllers.Controller;
 import com.harystolho.controllers.MainController;
 import com.harystolho.utils.ViwksUtils;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 /**
@@ -26,7 +25,7 @@ public class ViwksGUI extends Application {
 
 	private Stage window;
 
-	private MainController controller;
+	private MainController mainController;
 
 	/**
 	 * Creates a new window and loads the main components.
@@ -39,7 +38,7 @@ public class ViwksGUI extends Application {
 		window.setHeight(700);
 
 		// Creates a new Scene from a fxml file
-		Scene scene = loadGUIFromFXML();
+		Scene scene = createMainScene();
 
 		scene.getStylesheets().add(ViwksUtils.RESOURCES + "style.css");
 
@@ -49,35 +48,50 @@ public class ViwksGUI extends Application {
 	}
 
 	/**
-	 * Loads the FXML class from the file
+	 * Creates the main Scene for the application.
 	 * 
 	 * @return Scene
 	 */
-	@SuppressWarnings("static-access")
-	private Scene loadGUIFromFXML() {
+	private Scene createMainScene() {
 
-		Scene scene = null;
-
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			BorderPane pane = loader.load(new URL(ViwksUtils.MAIN_FXML));
-			controller = loader.getController();
-			
-			scene = new Scene(pane);
-			
-		} catch (IOException e) {
-			ViwksUtils.getLogger().log(Level.SEVERE, "Couldn't load the main.fxml file");
-			e.printStackTrace();
-		}
+		Scene scene = new Scene(loadFXML("main.xml"));
 
 		return scene;
 	}
 
-	public MainController getController() {
-		if (this.controller != null) {
-			return this.controller;
+	/**
+	 * Loads a FXML class from the file. Returns null if it can't find the file.
+	 * 
+	 * @param name
+	 *            the name of the FXML file you want to load.
+	 * @return a {@link Parent} object.
+	 */
+	@SuppressWarnings("static-access")
+	private Parent loadFXML(String name) {
+
+		Parent p = null;
+
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			p = loader.load(new URL(ViwksUtils.MAIN_FXML));
+			mainController = loader.getController();
+		} catch (IOException e) {
+			ViwksUtils.getLogger().log(Level.SEVERE, "Couldn't load the " + name + ".fxml file");
+			e.printStackTrace();
 		}
-		throw new NullPointerException("The controller object is null");
+
+		if (p == null) {
+			throw new NullPointerException("Couldn't find the specified FXML file. file=" + name);
+		}
+
+		return p;
+	}
+
+	public Controller getMainController() {
+		if (this.mainController != null) {
+			return this.mainController;
+		}
+		throw new NullPointerException("The controller object is null.");
 	}
 
 	public Stage getWindow() {

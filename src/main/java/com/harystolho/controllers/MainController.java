@@ -6,7 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
-public class MainController {
+public class MainController implements Controller {
 
 	@FXML
 	private ResourceBundle resources;
@@ -26,7 +26,5 @@ public class MainController {
 		assert urlInput != null : "fx:id=\"urlInput\" was not injected: check your FXML file 'main.fxml'.";
 
 	}
-	
-	
-	
+
 }
