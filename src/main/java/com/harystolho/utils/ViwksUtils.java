@@ -14,7 +14,10 @@ import java.util.logging.Logger;
 public class ViwksUtils {
 
 	public static final String RESOURCES = "file:src/main/resources/";
-
+	
+	public static final String MAIN_FXML = RESOURCES + "/main.fxml";
+	public static final String TASK_FXML = RESOURCES + "/taskCreator.fxml";
+	
 	private static Logger logger;
 	private static ExecutorService executor; // TODO shutdown on close
 

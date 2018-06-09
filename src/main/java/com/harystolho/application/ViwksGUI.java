@@ -49,18 +49,22 @@ public class ViwksGUI extends Application {
 	}
 
 	/**
-	 * Loads the fxml from the file
+	 * Loads the FXML class from the file
 	 * 
 	 * @return Scene
 	 */
+	@SuppressWarnings("static-access")
 	private Scene loadGUIFromFXML() {
 
 		Scene scene = null;
 
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			BorderPane pane = loader.load(new URL(ViwksUtils.RESOURCES + "main.fxml"));
+			BorderPane pane = loader.load(new URL(ViwksUtils.MAIN_FXML));
 			controller = loader.getController();
+			
+			scene = new Scene(pane);
+			
 		} catch (IOException e) {
 			ViwksUtils.getLogger().log(Level.SEVERE, "Couldn't load the main.fxml file");
 			e.printStackTrace();
