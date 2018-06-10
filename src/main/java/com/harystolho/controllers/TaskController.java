@@ -83,7 +83,7 @@ public class TaskController implements Controller {
 				return;
 			}
 			
-			
+			page.downloadPage();
 			
 		});
 

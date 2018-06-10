@@ -42,13 +42,13 @@ public class ViwksGUI extends Application {
 		window.setWidth(1200);
 		window.setHeight(700);
 
-		// Creates a new Scene from a FXML file
+		// Creates the main menu scene
 		mainScene = createMainScene();
 		mainScene.getStylesheets().add(ViwksUtils.RESOURCES + "style.css");
 
 		setScene(mainScene);
 
-		// Sets the static variable to this
+		// I'm not sure why I need to do this but if I don't it doesn't work.
 		Main.setGUI(this);
 
 		window.setOnCloseRequest((e) -> {

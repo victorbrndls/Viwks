@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
@@ -66,17 +67,17 @@
          <children>
             <FlowPane maxHeight="536.0" prefHeight="146.0" prefWidth="536.0">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="#content" wrappingWidth="200.0">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="#content" wrappingWidth="121.0">
                      <font>
                         <Font name="Arial" size="22.0" />
                      </font>
                   </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text=".main-class" wrappingWidth="176.0">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text=".main-class" wrappingWidth="136.0">
                      <font>
                         <Font name="Arial" size="22.0" />
                      </font>
                   </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text=".another-class" wrappingWidth="142.0">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text=".another-class" wrappingWidth="158.0">
                      <font>
                         <Font name="Arial" size="22.0" />
                      </font>
@@ -101,7 +102,7 @@
                         <Font size="25.0" />
                      </font>
                   </Text>
-                  <MenuButton layoutY="133.0" mnemonicParsing="false" text="Selector">
+                  <MenuButton fx:id="valueSelectorButton" layoutY="133.0" mnemonicParsing="false" text="Selector">
                     <items>
                       <MenuItem mnemonicParsing="false" text="value" />
                       <MenuItem mnemonicParsing="false" text="innerHTML" />
@@ -110,14 +111,14 @@
                   <TextField fx:id="taskNameField" layoutY="14.0" promptText="Task Name" />
                </children>
             </Pane>
-            <Pane prefHeight="220.0" prefWidth="536.0">
+            <Pane prefHeight="221.0" prefWidth="536.0">
                <children>
-                  <Button fx:id="saveButton" layoutX="459.0" layoutY="187.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="77.0" text="Save">
+                  <Button fx:id="saveButton" layoutX="459.0" layoutY="183.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="77.0" text="Save">
                      <font>
                         <Font size="17.0" />
                      </font>
                   </Button>
-                  <Button fx:id="closeButton" layoutX="373.0" layoutY="187.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="77.0" text="Close">
+                  <Button fx:id="closeButton" layoutX="369.0" layoutY="183.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="77.0" text="Close">
                      <font>
                         <Font size="17.0" />
                      </font>
@@ -130,27 +131,19 @@
    <left>
       <VBox prefHeight="580.0" prefWidth="500.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox prefHeight="82.0" prefWidth="500.0">
+            <Pane prefHeight="69.0" prefWidth="500.0">
                <children>
-                  <ToggleButton fx:id="enableClassButton" mnemonicParsing="false" text="Eneble Classes">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </ToggleButton>
-                  <ToggleButton fx:id="enableIdButton" mnemonicParsing="false" text="Enable IDs">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </ToggleButton>
-                  <Region prefHeight="34.0" prefWidth="182.0" />
-                  <Button disable="true" mnemonicParsing="false" text="Use Visual Selector">
+                  <ToggleButton fx:id="enableClassButton" layoutY="2.0" mnemonicParsing="false" text="Eneble Classes" />
+                  <ToggleButton fx:id="enableIdButton" layoutX="102.0" layoutY="2.0" mnemonicParsing="false" text="Enable IDs" />
+                  <Button disable="true" layoutX="383.0" layoutY="2.0" mnemonicParsing="false" text="Use Visual Selector">
                      <tooltip>
                         <Tooltip text="WIP" />
                      </tooltip>
                   </Button>
+                  <ProgressBar fx:id="progressBar" layoutX="2.0" layoutY="35.0" prefHeight="18.0" prefWidth="498.0" progress="0.0" />
                </children>
-            </HBox>
-            <ListView id="list" fx:id="list" maxWidth="508.0" prefHeight="496.0" prefWidth="508.0" />
+            </Pane>
+            <ListView id="list" fx:id="list" maxWidth="508.0" prefHeight="518.0" prefWidth="500.0" />
          </children>
          <BorderPane.margin>
             <Insets top="15.0" />
