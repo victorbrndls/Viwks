@@ -23,9 +23,9 @@ public class MainController implements Controller {
 
 	@FXML
 	void initialize() {
-		loadEventListeners();
-
 		Main.getGUI().setMainController(this);
+
+		loadEventListeners();
 	}
 
 	private void loadEventListeners() {
@@ -37,9 +37,9 @@ public class MainController implements Controller {
 	}
 
 	private void openTaskWindow() {
-
+		// TODO This may cause a memory leak problem
 		Scene taskScene = new Scene(ViwksGUI.loadFXML("taskCreator.fxml"));
-		
+
 		Main.getGUI().setScene(taskScene);
 
 	}

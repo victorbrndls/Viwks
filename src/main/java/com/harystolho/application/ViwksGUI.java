@@ -51,6 +51,10 @@ public class ViwksGUI extends Application {
 		// Sets the static variable to this
 		Main.setGUI(this);
 
+		window.setOnCloseRequest((e) -> {
+			ViwksUtils.close();
+		});
+
 		window.show();
 	}
 
@@ -62,18 +66,6 @@ public class ViwksGUI extends Application {
 	private Scene createMainScene() {
 
 		Scene scene = new Scene(loadFXML("main.fxml"));
-
-		return scene;
-	}
-
-	/**
-	 * Creates the task Creator scene for the application.
-	 * 
-	 * @return Scene
-	 */
-	private Scene createTaskScene() {
-
-		Scene scene = new Scene(loadFXML("taskCreator.fxml"));
 
 		return scene;
 	}
@@ -117,6 +109,13 @@ public class ViwksGUI extends Application {
 		return p;
 	}
 
+	public Scene getMainScene() {
+		if (mainScene == null) {
+			throw new NullPointerException("The main Scene is null.");
+		}
+		return mainScene;
+	}
+
 	public void setMainController(MainController controller) {
 		mainController = controller;
 	}
@@ -125,7 +124,18 @@ public class ViwksGUI extends Application {
 		if (mainController != null) {
 			return mainController;
 		}
-		throw new NullPointerException("The controller object is null.");
+		throw new NullPointerException("The Main controller object is null.");
+	}
+
+	public void setTaskController(TaskController controller) {
+		taskController = controller;
+	}
+
+	public Controller getTaskController() {
+		if (taskController != null) {
+			return taskController;
+		}
+		throw new NullPointerException("The Task controller object is null.");
 	}
 
 	public Stage getWindow() {

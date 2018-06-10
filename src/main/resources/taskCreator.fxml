@@ -29,7 +29,7 @@
    <top>
       <HBox prefHeight="36.0" prefWidth="1120.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField id="urlInput" fx:id="urlInput" prefHeight="36.0" prefWidth="946.0" promptText="URL" stylesheets="@style.css" text="https://www.youtube.com/">
+            <TextField id="urlInput" fx:id="urlField" prefHeight="36.0" prefWidth="946.0" promptText="URL" stylesheets="@style.css" text="https://www.youtube.com/">
                <padding>
                   <Insets left="15.0" />
                </padding>
@@ -38,7 +38,7 @@
                </font>
             </TextField>
             <Region prefHeight="36.0" prefWidth="73.0" />
-            <Button id="loadPage" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="67.0" prefWidth="103.0" stylesheets="@style.css" text="Load Page">
+            <Button id="loadPage" fx:id="loadPageButton" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="67.0" prefWidth="103.0" stylesheets="@style.css" text="Load Page">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
@@ -86,9 +86,9 @@
             <Separator id="separator" prefHeight="12.0" prefWidth="536.0" />
             <Pane prefHeight="172.0" prefWidth="536.0">
                <children>
-                  <TextField layoutY="57.0" prefHeight="25.0" prefWidth="148.0" promptText="Id" />
-                  <TextField layoutX="268.0" layoutY="57.0" promptText="Interval" />
-                  <MenuButton layoutX="429.0" layoutY="57.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="93.0" text="Unit">
+                  <TextField fx:id="selectorField" layoutY="57.0" prefHeight="25.0" prefWidth="148.0" promptText="Id" />
+                  <TextField fx:id="intervalField" layoutX="268.0" layoutY="57.0" promptText="Interval" />
+                  <MenuButton fx:id="unitButton" layoutX="429.0" layoutY="57.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="93.0" text="Unit">
                     <items>
                       <MenuItem mnemonicParsing="false" text="Second(s)" />
                       <MenuItem mnemonicParsing="false" text="Minute(s)" />
@@ -96,7 +96,7 @@
                         <MenuItem mnemonicParsing="false" text="Day(s)" />
                     </items>
                   </MenuButton>
-                  <Text layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Value goes here" wrappingWidth="517.8525390625">
+                  <Text fx:id="valueText" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Value goes here" wrappingWidth="517.8525390625">
                      <font>
                         <Font size="25.0" />
                      </font>
@@ -107,7 +107,7 @@
                       <MenuItem mnemonicParsing="false" text="innerHTML" />
                     </items>
                   </MenuButton>
-                  <TextField layoutY="14.0" promptText="Task Name" />
+                  <TextField fx:id="taskNameField" layoutY="14.0" promptText="Task Name" />
                </children>
             </Pane>
             <Pane prefHeight="220.0" prefWidth="536.0">
@@ -132,12 +132,12 @@
          <children>
             <HBox prefHeight="82.0" prefWidth="500.0">
                <children>
-                  <ToggleButton mnemonicParsing="false" text="Eneble Classes">
+                  <ToggleButton fx:id="enableClassButton" mnemonicParsing="false" text="Eneble Classes">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
                   </ToggleButton>
-                  <ToggleButton mnemonicParsing="false" text="Enable IDs">
+                  <ToggleButton fx:id="enableIdButton" mnemonicParsing="false" text="Enable IDs">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
