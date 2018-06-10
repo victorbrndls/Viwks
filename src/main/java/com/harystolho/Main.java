@@ -23,4 +23,11 @@ public class Main {
 		viwks.init(args);
 
 	}
+
+	public static ViwksGUI getGUI() {
+		if (viwks == null) {
+			throw new NullPointerException("The GUI object is null.");
+		}
+		return viwks;
+	}
 }
