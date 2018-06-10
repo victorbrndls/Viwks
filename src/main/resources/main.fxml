@@ -31,7 +31,7 @@
                </font>
             </Text>
             <Separator layoutX="352.0" layoutY="409.0" prefHeight="18.0" prefWidth="787.0" />
-            <Button fx:id="openTask1" layoutX="996.0" layoutY="378.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="140.0" text="Play">
+            <Button fx:id="playButton" layoutX="996.0" layoutY="378.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="140.0" text="Play">
                <font>
                   <Font size="15.0" />
                </font>

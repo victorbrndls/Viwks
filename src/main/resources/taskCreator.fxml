@@ -108,7 +108,10 @@
                       <MenuItem mnemonicParsing="false" text="innerHTML" />
                     </items>
                   </MenuButton>
-                  <TextField fx:id="taskNameField" layoutY="14.0" promptText="Task Name" />
+                  <TextField fx:id="taskNameField" layoutY="7.0" promptText="Task Name">
+                     <font>
+                        <Font size="15.0" />
+                     </font></TextField>
                </children>
             </Pane>
             <Pane prefHeight="221.0" prefWidth="536.0">

@@ -2,6 +2,8 @@ package com.harystolho.controllers;
 
 import com.harystolho.Main;
 import com.harystolho.application.PageDownloader;
+import com.harystolho.task.Task;
+import com.harystolho.task.Task.TaskBuilder;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -53,6 +55,7 @@ public class TaskController implements Controller {
 	private ListView<?> list;
 
 	private PageDownloader page;
+	private Task currentTask;
 
 	@FXML
 	void initialize() {
@@ -82,11 +85,15 @@ public class TaskController implements Controller {
 				// TODO show pop up
 				return;
 			}
-			
+
 			page.downloadPage();
-			
+
 		});
 
+	}
+
+	public void setTask(Task task) {
+		currentTask = task;
 	}
 
 	/**
