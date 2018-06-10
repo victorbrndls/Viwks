@@ -24,6 +24,15 @@ public class Main {
 
 	}
 
+	/**
+	 * Sets {@link #viwks} to the gui parameter
+	 * 
+	 * @param gui
+	 */
+	public static void setGUI(ViwksGUI gui) {
+		viwks = gui;
+	}
+
 	public static ViwksGUI getGUI() {
 		if (viwks == null) {
 			throw new NullPointerException("The GUI object is null.");

@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Level;
 
+import com.harystolho.Main;
 import com.harystolho.controllers.Controller;
-import com.harystolho.controllers.ControllerSetter;
 import com.harystolho.controllers.MainController;
 import com.harystolho.controllers.TaskController;
 import com.harystolho.utils.ViwksUtils;
@@ -27,6 +27,8 @@ public class ViwksGUI extends Application {
 
 	private Stage window;
 
+	private Scene mainScene;
+
 	private MainController mainController;
 	private TaskController taskController;
 
@@ -41,17 +43,19 @@ public class ViwksGUI extends Application {
 		window.setHeight(700);
 
 		// Creates a new Scene from a FXML file
-		Scene scene = createMainScene();
+		mainScene = createMainScene();
+		mainScene.getStylesheets().add(ViwksUtils.RESOURCES + "style.css");
 
-		scene.getStylesheets().add(ViwksUtils.RESOURCES + "style.css");
+		setScene(mainScene);
 
-		window.setScene(scene);
+		// Sets the static variable to this
+		Main.setGUI(this);
 
 		window.show();
 	}
 
 	/**
-	 * Creates the main Scene for the application.
+	 * Creates the main scene for the application.
 	 * 
 	 * @return Scene
 	 */
@@ -60,6 +64,28 @@ public class ViwksGUI extends Application {
 		Scene scene = new Scene(loadFXML("main.fxml"));
 
 		return scene;
+	}
+
+	/**
+	 * Creates the task Creator scene for the application.
+	 * 
+	 * @return Scene
+	 */
+	private Scene createTaskScene() {
+
+		Scene scene = new Scene(loadFXML("taskCreator.fxml"));
+
+		return scene;
+	}
+
+	/**
+	 * Shows this scene in the window.
+	 * 
+	 * @param scene
+	 *            the scene to be shown.
+	 */
+	public void setScene(Scene scene) {
+		window.setScene(scene);
 	}
 
 	/**
@@ -72,7 +98,7 @@ public class ViwksGUI extends Application {
 	 *             if it can't find the file.
 	 */
 	@SuppressWarnings("static-access")
-	private Parent loadFXML(String name) {
+	public static Parent loadFXML(String name) {
 
 		Parent p = null;
 

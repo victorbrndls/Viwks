@@ -4,12 +4,11 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import com.harystolho.Main;
+import com.harystolho.application.ViwksGUI;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
 
 public class MainController implements Controller {
 
@@ -25,9 +24,8 @@ public class MainController implements Controller {
 	@FXML
 	void initialize() {
 		loadEventListeners();
-		
+
 		Main.getGUI().setMainController(this);
-		
 	}
 
 	private void loadEventListeners() {
@@ -39,7 +37,11 @@ public class MainController implements Controller {
 	}
 
 	private void openTaskWindow() {
-		System.out.println(Main.getGUI().getMainController());
+
+		Scene taskScene = new Scene(ViwksGUI.loadFXML("taskCreator.fxml"));
+		
+		Main.getGUI().setScene(taskScene);
+
 	}
 
 }
