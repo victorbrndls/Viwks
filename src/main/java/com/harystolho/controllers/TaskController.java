@@ -1,12 +1,18 @@
 package com.harystolho.controllers;
 
+import java.awt.MenuItem;
+import java.io.File;
+
 import com.harystolho.Main;
 import com.harystolho.application.PageDownloader;
 import com.harystolho.task.Task;
+import com.harystolho.task.TaskUnit;
 import com.harystolho.task.Task.TaskBuilder;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
@@ -61,6 +67,11 @@ public class TaskController implements Controller {
 	void initialize() {
 		Main.getGUI().setTaskController(this);
 
+		if (currentTask == null)
+			currentTask = createDefaultTask();
+
+		loadTask();
+
 		loadEventListeners();
 	}
 
@@ -74,7 +85,7 @@ public class TaskController implements Controller {
 		});
 
 		saveButton.setOnMouseClicked((e) -> {
-
+			saveTask();
 		});
 
 		loadPageButton.setOnMouseClicked((e) -> {
@@ -92,8 +103,44 @@ public class TaskController implements Controller {
 
 	}
 
+	public Task createDefaultTask() {
+
+		Task task = new Task.TaskBuilder().build();
+
+		return task;
+
+	}
+
+	/**
+	 * Loads the fields from {@link #currentTask} in the GUI
+	 */
+	public void loadTask() {
+
+		if (currentTask.getURL() != null) {
+			urlField.setText(currentTask.getURL().toString());
+			// Moves the cursor to the end of the string
+			urlField.selectEnd();
+			urlField.forward();
+		}
+
+		taskNameField.setText(currentTask.getName());
+		
+		intervalField.setText(currentTask.getInterval() + "");
+		
+		unitButton.setText("SECOND");
+		
+	}
+
+	public void saveTask() {
+
+	}
+
 	public void setTask(Task task) {
 		currentTask = task;
+	}
+
+	public Task getTask() {
+		return currentTask;
 	}
 
 	/**

@@ -30,7 +30,7 @@
    <top>
       <HBox prefHeight="36.0" prefWidth="1120.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField id="urlInput" fx:id="urlField" prefHeight="36.0" prefWidth="946.0" promptText="URL" stylesheets="@style.css" text="https://www.youtube.com/">
+            <TextField id="urlInput" fx:id="urlField" prefHeight="36.0" prefWidth="946.0" promptText="URL" stylesheets="@style.css">
                <padding>
                   <Insets left="15.0" />
                </padding>

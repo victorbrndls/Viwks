@@ -1,6 +1,7 @@
 package com.harystolho.task;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
 import java.util.Random;
@@ -25,20 +26,31 @@ public class Task {
 	private URL url;
 	private int interval;
 	private TaskUnit unit;
+	private String selector;
 	private File outputFolder;
 	Properties configs;
 
+	/**
+	 * A Builder for the Task Class
+	 */
 	public static class TaskBuilder {
 		private int id;
 		private String name;
 		private URL url;
 		private int interval;
 		private TaskUnit unit;
+		private String selector;
 		private File outputFolder;
 		Properties configs;
 
 		public TaskBuilder() {
 			this.id = new Random().nextInt(5000);
+			this.name = "Task #" + id;
+			// url is not set
+			this.interval = 1;
+			this.unit = TaskUnit.MINUTE;
+			this.selector = "";
+			this.outputFolder = new File("/");
 			this.configs = new Properties();
 			this.configs.put(conf.ENABLE_CLASS, false);
 			this.configs.put(conf.ENABLE_ID, false);
@@ -68,6 +80,11 @@ public class Task {
 			return this;
 		}
 
+		public TaskBuilder setSelector(String selector) {
+			this.selector = selector;
+			return this;
+		}
+
 		public TaskBuilder setOutputFolder(File outputFolder) {
 			this.outputFolder = outputFolder;
 			return this;
@@ -82,6 +99,7 @@ public class Task {
 
 			Task task = new Task();
 
+			task.id = this.id;
 			task.name = this.name;
 			task.url = this.url;
 			task.interval = this.interval;
@@ -124,6 +142,14 @@ public class Task {
 
 	public TaskUnit getUnit() {
 		return unit;
+	}
+
+	public String getSelector() {
+		return selector;
+	}
+
+	public void setSelector(String selector) {
+		this.selector = selector;
 	}
 
 	public void setUnit(TaskUnit unit) {

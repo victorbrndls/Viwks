@@ -42,6 +42,8 @@ public class MainController implements Controller {
 	void initialize() {
 		Main.getGUI().setMainController(this);
 
+		loadTasks();
+
 		loadEventListeners();
 	}
 
@@ -51,6 +53,10 @@ public class MainController implements Controller {
 			openTaskWindow();
 		});
 
+	}
+
+	private void loadTasks() {
+		
 	}
 
 	private void openTaskWindow() {
