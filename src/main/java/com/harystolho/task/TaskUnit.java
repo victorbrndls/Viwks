@@ -1,5 +1,11 @@
 package com.harystolho.task;
 
+/**
+ * A enum to make exchanges among time units
+ * 
+ * @author Harystolho
+ *
+ */
 public enum TaskUnit {
 
 	SECOND(1000, "Second(s)"), MINUTE(60 * 1000, "Minute(s)"), HOUR(60 * 60 * 1000, "Hour(s)"), DAY(24 * 60 * 60 * 100,

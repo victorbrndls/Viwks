@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.Properties;
 import java.util.Random;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -45,6 +46,9 @@ public class Task {
 		private File outputFolder;
 		Properties configs;
 
+		/**
+		 * Initialize the Builder with default values.
+		 */
 		public TaskBuilder() {
 			this.id = new Random().nextInt(5000);
 			this.name = "Task #" + id;
@@ -175,11 +179,37 @@ public class Task {
 		this.configs = configs;
 	}
 
+	/**
+	 * Generates a JSON object containing all the tasks's fields
+	 * 
+	 * @return JSON object
+	 */
 	public JSONObject generateJSON() {
 		JSONObject json = new JSONObject();
 
 		json.put("id", id);
 		json.put("name", name);
+		json.put("url", url);
+		json.put("interval", interval);
+		json.put("unit", unit.getName());
+		json.put("selector", selector);
+		json.put("output", outputFolder);
+
+		JSONArray jsonConfigs = new JSONArray();
+
+		JSONObject enableClass = new JSONObject();
+		JSONObject enableId = new JSONObject();
+
+		enableClass.put("key", "enableClass");
+		enableClass.put("enabled", (boolean) configs.get(conf.ENABLE_CLASS));
+
+		enableId.put("key", "enableId");
+		enableId.put("enabled", (boolean) configs.get(conf.ENABLE_ID));
+
+		jsonConfigs.put(enableClass);
+		jsonConfigs.put(enableId);
+
+		json.put("configuration", jsonConfigs);
 
 		return json;
 	}

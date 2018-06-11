@@ -132,7 +132,7 @@ public class TaskController implements Controller {
 	}
 
 	/**
-	 * Loads the fields from {@link #currentTask} in the GUI
+	 * Loads the data from {@link #currentTask} in the GUI
 	 */
 	public void loadTask() {
 
@@ -164,7 +164,7 @@ public class TaskController implements Controller {
 	}
 
 	/**
-	 * Saves the current Task to a file inside a folder named tasks
+	 * Saves the {@link #currentTask} to a file inside a folder named "tasks"
 	 */
 	public void saveTask() {
 
@@ -180,10 +180,8 @@ public class TaskController implements Controller {
 			fos.flush();
 
 		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
