@@ -1,6 +1,5 @@
 package com.harystolho.controllers;
 
-import java.awt.MenuItem;
 import java.io.File;
 
 import com.harystolho.Main;
@@ -15,6 +14,7 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.text.Text;
@@ -101,6 +101,18 @@ public class TaskController implements Controller {
 
 		});
 
+		unitButton.getItems().forEach((item) -> {
+			item.setOnAction((e) -> {
+				unitButton.setText(((MenuItem) e.getTarget()).getText());
+			});
+		});
+
+		valueSelectorButton.getItems().forEach((item) -> {
+			item.setOnAction((e) -> {
+				valueSelectorButton.setText(((MenuItem) e.getTarget()).getText());
+			});
+		});
+
 	}
 
 	public Task createDefaultTask() {
@@ -124,11 +136,23 @@ public class TaskController implements Controller {
 		}
 
 		taskNameField.setText(currentTask.getName());
-		
+
+		selectorField.setText(currentTask.getSelector());
+
+		valueSelectorButton.setText(currentTask.getSelector());
+
 		intervalField.setText(currentTask.getInterval() + "");
-		
-		unitButton.setText("SECOND");
-		
+
+		unitButton.setText(currentTask.getUnit().getName());
+
+		if (!(boolean) currentTask.getConfigs().get(Task.conf.ENABLE_CLASS)) {
+			enableClassButton.setSelected(true);
+		}
+
+		if (!(boolean) currentTask.getConfigs().get(Task.conf.ENABLE_ID)) {
+			enableIdButton.setSelected(true);
+		}
+
 	}
 
 	public void saveTask() {

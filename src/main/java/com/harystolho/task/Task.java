@@ -17,7 +17,7 @@ public class Task {
 	/**
 	 * Task configurations
 	 */
-	private enum conf {
+	public enum conf {
 		ENABLE_CLASS, ENABLE_ID
 	};
 
@@ -49,7 +49,7 @@ public class Task {
 			// url is not set
 			this.interval = 1;
 			this.unit = TaskUnit.MINUTE;
-			this.selector = "";
+			this.selector = "value";
 			this.outputFolder = new File("/");
 			this.configs = new Properties();
 			this.configs.put(conf.ENABLE_CLASS, false);
@@ -104,6 +104,7 @@ public class Task {
 			task.url = this.url;
 			task.interval = this.interval;
 			task.unit = this.unit;
+			task.selector = this.selector;
 			task.outputFolder = this.outputFolder;
 			task.configs = this.configs;
 
@@ -144,6 +145,10 @@ public class Task {
 		return unit;
 	}
 
+	public void setUnit(TaskUnit unit) {
+		this.unit = unit;
+	}
+
 	public String getSelector() {
 		return selector;
 	}
@@ -152,16 +157,20 @@ public class Task {
 		this.selector = selector;
 	}
 
-	public void setUnit(TaskUnit unit) {
-		this.unit = unit;
-	}
-
 	public File getOutputFolder() {
 		return outputFolder;
 	}
 
 	public void setOutputFolder(File outputFolder) {
 		this.outputFolder = outputFolder;
+	}
+
+	public Properties getConfigs() {
+		return configs;
+	}
+
+	public void setConfigs(Properties configs) {
+		this.configs = configs;
 	}
 
 }

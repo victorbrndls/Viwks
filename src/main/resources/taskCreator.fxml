@@ -97,7 +97,7 @@
                         <MenuItem mnemonicParsing="false" text="Day(s)" />
                     </items>
                   </MenuButton>
-                  <Text fx:id="valueText" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Value goes here" wrappingWidth="517.8525390625">
+                  <Text fx:id="valueText" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-" wrappingWidth="517.8525390625">
                      <font>
                         <Font size="25.0" />
                      </font>

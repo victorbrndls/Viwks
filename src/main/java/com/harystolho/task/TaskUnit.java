@@ -17,4 +17,8 @@ public enum TaskUnit {
 		return this.multiplier;
 	}
 
+	public String getName() {
+		return this.name;
+	}
+
 }
