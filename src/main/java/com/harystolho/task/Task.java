@@ -6,6 +6,8 @@ import java.net.URL;
 import java.util.Properties;
 import java.util.Random;
 
+import org.json.JSONObject;
+
 /**
  * Class to store information about a Task.
  * 
@@ -171,6 +173,15 @@ public class Task {
 
 	public void setConfigs(Properties configs) {
 		this.configs = configs;
+	}
+
+	public JSONObject generateJSON() {
+		JSONObject json = new JSONObject();
+
+		json.put("id", id);
+		json.put("name", name);
+
+		return json;
 	}
 
 }

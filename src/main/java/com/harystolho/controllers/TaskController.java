@@ -1,6 +1,14 @@
 package com.harystolho.controllers;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.nio.file.Files;
+
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.helper.StringUtil;
 
 import com.harystolho.Main;
 import com.harystolho.application.PageDownloader;
@@ -155,7 +163,29 @@ public class TaskController implements Controller {
 
 	}
 
+	/**
+	 * Saves the current Task to a file inside a folder named tasks
+	 */
 	public void saveTask() {
+
+		File folder = new File("tasks");
+		if (!folder.exists()) {
+			folder.mkdirs();
+		}
+
+		try (FileOutputStream fos = new FileOutputStream(
+				new File(folder.getAbsolutePath() + "/" + currentTask.getId() + ".json"))) {
+
+			fos.write(currentTask.generateJSON().toString().getBytes());
+			fos.flush();
+
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 	}
 
