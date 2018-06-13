@@ -24,7 +24,7 @@
                <font>
                   <Font size="15.0" />
                </font></Button>
-            <ListView layoutX="14.0" layoutY="14.0" prefHeight="596.0" prefWidth="323.0" />
+            <ListView fx:id="taskList" layoutX="14.0" layoutY="14.0" prefHeight="596.0" prefWidth="323.0" />
             <Text fx:id="taskNameField" layoutX="352.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="#TaskTitle" wrappingWidth="727.1025390625">
                <font>
                   <Font size="22.0" />

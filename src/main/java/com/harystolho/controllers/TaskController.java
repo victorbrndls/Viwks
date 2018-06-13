@@ -14,7 +14,9 @@ import com.harystolho.Main;
 import com.harystolho.application.PageDownloader;
 import com.harystolho.task.Task;
 import com.harystolho.task.TaskUnit;
+import com.harystolho.task.TaskUtils;
 import com.harystolho.task.Task.TaskBuilder;
+import com.harystolho.task.Task.conf;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -93,7 +95,7 @@ public class TaskController implements Controller {
 		});
 
 		saveButton.setOnMouseClicked((e) -> {
-			saveTask();
+			TaskUtils.saveTask(currentTask);
 		});
 
 		loadPageButton.setOnMouseClicked((e) -> {
@@ -123,6 +125,11 @@ public class TaskController implements Controller {
 
 	}
 
+	/**
+	 * Creates a new task with default configuration
+	 * 
+	 * @return {@link com.harystolho.task.Task Task}
+	 */
 	public Task createDefaultTask() {
 
 		Task task = new Task.TaskBuilder().build();
@@ -132,7 +139,7 @@ public class TaskController implements Controller {
 	}
 
 	/**
-	 * Loads the data from {@link #currentTask} in the GUI
+	 * Loads data from {@link #currentTask} and displays it in the application
 	 */
 	public void loadTask() {
 
@@ -159,30 +166,6 @@ public class TaskController implements Controller {
 
 		if (!(boolean) currentTask.getConfigs().get(Task.conf.ENABLE_ID)) {
 			enableIdButton.setSelected(true);
-		}
-
-	}
-
-	/**
-	 * Saves the {@link #currentTask} to a file inside a folder named "tasks"
-	 */
-	public void saveTask() {
-
-		File folder = new File("tasks");
-		if (!folder.exists()) {
-			folder.mkdirs();
-		}
-
-		try (FileOutputStream fos = new FileOutputStream(
-				new File(folder.getAbsolutePath() + "/" + currentTask.getId() + ".json"))) {
-
-			fos.write(currentTask.generateJSON().toString().getBytes());
-			fos.flush();
-
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			e1.printStackTrace();
 		}
 
 	}

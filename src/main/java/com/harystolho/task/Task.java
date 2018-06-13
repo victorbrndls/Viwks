@@ -18,7 +18,7 @@ import org.json.JSONObject;
 public class Task {
 
 	/**
-	 * Task configurations
+	 * Task configuration enum
 	 */
 	public enum conf {
 		ENABLE_CLASS, ENABLE_ID
@@ -32,6 +32,10 @@ public class Task {
 	private String selector;
 	private File outputFolder;
 	Properties configs;
+
+	private Task() {
+
+	}
 
 	/**
 	 * A Builder for the Task Class
@@ -50,7 +54,11 @@ public class Task {
 		 * Initialize the Builder with default values.
 		 */
 		public TaskBuilder() {
-			this.id = new Random().nextInt(5000);
+			this(new Random().nextInt(5000));
+		}
+
+		public TaskBuilder(int id) {
+			this.id = id;
 			this.name = "Task #" + id;
 			// url is not set
 			this.interval = 1;
@@ -132,7 +140,16 @@ public class Task {
 	}
 
 	public URL getURL() {
-		return url;
+		if (url != null) {
+			return url;
+		}
+
+		try {
+			return new URL("https://");
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public void setURL(URL url) {
@@ -179,39 +196,8 @@ public class Task {
 		this.configs = configs;
 	}
 
-	/**
-	 * Generates a JSON object containing all the tasks's fields
-	 * 
-	 * @return JSON object
-	 */
-	public JSONObject generateJSON() {
-		JSONObject json = new JSONObject();
-
-		json.put("id", id);
-		json.put("name", name);
-		json.put("url", url);
-		json.put("interval", interval);
-		json.put("unit", unit.getName());
-		json.put("selector", selector);
-		json.put("output", outputFolder);
-
-		JSONArray jsonConfigs = new JSONArray();
-
-		JSONObject enableClass = new JSONObject();
-		JSONObject enableId = new JSONObject();
-
-		enableClass.put("key", "enableClass");
-		enableClass.put("enabled", (boolean) configs.get(conf.ENABLE_CLASS));
-
-		enableId.put("key", "enableId");
-		enableId.put("enabled", (boolean) configs.get(conf.ENABLE_ID));
-
-		jsonConfigs.put(enableClass);
-		jsonConfigs.put(enableId);
-
-		json.put("configuration", jsonConfigs);
-
-		return json;
+	public String toString() {
+		return this.name;
 	}
 
 }

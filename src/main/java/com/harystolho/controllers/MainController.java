@@ -2,10 +2,13 @@ package com.harystolho.controllers;
 
 import com.harystolho.Main;
 import com.harystolho.application.ViwksGUI;
+import com.harystolho.task.Task;
+import com.harystolho.task.TaskUtils;
 
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
@@ -13,6 +16,9 @@ public class MainController implements Controller {
 
 	@FXML
 	private Button openTask;
+
+	@FXML
+	private ListView<Task> taskList;
 
 	@FXML
 	private Text taskNameField;
@@ -52,11 +58,21 @@ public class MainController implements Controller {
 		openTask.setOnMouseClicked((e) -> {
 			openTaskWindow();
 		});
-
+		
+		
+		
 	}
 
+	/**
+	 * Loads task from file and displays it
+	 */
 	private void loadTasks() {
-		
+
+		taskList.getItems().clear();
+
+		TaskUtils.loadTasks().forEach((item) -> {
+			taskList.getItems().add(item);
+		});
 	}
 
 	private void openTaskWindow() {
