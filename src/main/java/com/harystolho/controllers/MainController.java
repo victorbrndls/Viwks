@@ -1,5 +1,7 @@
 package com.harystolho.controllers;
 
+import java.io.File;
+
 import com.harystolho.Main;
 import com.harystolho.application.ViwksGUI;
 import com.harystolho.task.Task;
@@ -11,6 +13,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 
 public class MainController implements Controller {
 
@@ -40,6 +44,7 @@ public class MainController implements Controller {
 
 	@FXML
 	private TextField folderField;
+	private File outputFolder;
 
 	@FXML
 	private Button changeFolderButton;
@@ -59,6 +64,17 @@ public class MainController implements Controller {
 
 		openTask.setOnMouseClicked((e) -> {
 			openTaskWindow();
+		});
+
+		changeFolderButton.setOnMouseClicked((e) -> {
+			DirectoryChooser chooser = new DirectoryChooser();
+			chooser.setTitle("Choose a output folder");
+
+			// TODO check if the directory is valid
+			outputFolder = chooser.showDialog(Main.getGUI().getWindow());
+
+			folderField.setText(outputFolder.getAbsolutePath());
+
 		});
 
 		taskList.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newValue) -> {

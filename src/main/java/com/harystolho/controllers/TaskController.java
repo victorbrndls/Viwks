@@ -122,7 +122,7 @@ public class TaskController implements Controller {
 				valueSelectorButton.setText(((MenuItem) e.getTarget()).getText());
 			});
 		});
-
+		
 	}
 
 	/**
