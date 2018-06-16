@@ -24,7 +24,7 @@ public class MainController implements Controller {
 	private Text taskNameField;
 
 	@FXML
-	private Button playButton;
+	private Button runButton;
 
 	@FXML
 	private Button deleteButton;
@@ -44,6 +44,8 @@ public class MainController implements Controller {
 	@FXML
 	private Button changeFolderButton;
 
+	private Task currentTask;
+
 	@FXML
 	void initialize() {
 		Main.getGUI().setMainController(this);
@@ -58,9 +60,23 @@ public class MainController implements Controller {
 		openTask.setOnMouseClicked((e) -> {
 			openTaskWindow();
 		});
-		
-		
-		
+
+		taskList.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newValue) -> {
+			currentTask = (Task) newValue;
+			updateTaskDisplay(currentTask);
+		});
+
+	}
+
+	private void updateTaskDisplay(Task task) {
+
+		taskNameField.setText(task.getName());
+
+		intervalField.setText(task.getInterval() + "");
+		unitField.setText(task.getUnit().getName());
+
+		folderField.setText(task.getOutputFolder().toString());
+
 	}
 
 	/**
