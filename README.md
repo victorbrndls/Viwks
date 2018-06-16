@@ -6,7 +6,7 @@ An Application to get data from websites periodically.
 Fast and light-weight.
 
 ## Downloads
-No available at the moment/.
+Not available at the moment.
 
 ## Contributing
 Feel free to contribute to this project.
