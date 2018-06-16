@@ -1,43 +1,61 @@
-#content {
-    -fx-background-color: rgba(0, 0, 0, 0.14);
+@font-face {
+    font-family: 'Quicksand';
+    src: url('Quicksand-Medium.ttf');
 }
 
-#urlInput, #loadPage {
-    -fx-background-color: rgba(0, 0, 0, 0.24);
+#pane, .list-view {
+    -fx-background-color: rgb(77, 77, 77);
 }
 
-#list {
-    -fx-background-color: rgba(0, 0, 0, 0.24);
-    -fx-background-radius: 5px;
+.button {
+    -fx-background-color: #2E5ECC;
+    -fx-background-radius: 0;
+    -fx-text-fill: white;
+    -fx-font-family: "Quicksand";
+    -fx-font-size: 15px;
 }
 
-#list:selected {
-    -fx-background-color: red;
+.text-field {
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-background-color: rgb(104, 104, 104);
 }
 
-#list .list-cell{
-    -fx-background-color: rgba(0, 0, 0, 0.15);
+.label {
+    -fx-font-size: 17px;
+    -fx-font-family: "Quicksand";
     -fx-text-fill: white;
 }
 
-#list .cell:selected{
-    -fx-background-color: white;
-    -fx-text-fill: black;
+.list-view {
+    -fx-border-width: 0 2px 0 0;
+    -fx-border-color: rgb(104, 104, 104);
 }
 
-#urlInput {
-
+.list-cell:even, .list-cell:odd {
+    -fx-background-color: transparent;
 }
 
-#separator .line{
+.list-cell .text {
+    -fx-font-size: 13px;
+    -fx-font-family: "Quicksand";
+    -fx-fill: white;
+}
+
+.separator:horizontal .line {
     -fx-border-width: 1px;
-    -fx-border-color: rgba(0, 0, 0, 0.26);
+    -fx-border-color: rgb(104, 104, 104);
 }
 
-#configuration {
-    -fx-background-radius: 5px;
+.menu-bar {
+    -fx-background-color: #2E5ECC;
 }
 
-#loadPage {
+.menu-bar .label {
+    -fx-font-size: 12px;
+}
 
+#taskNameField {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
 }

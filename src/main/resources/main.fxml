@@ -2,6 +2,7 @@
 
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -18,79 +19,63 @@
 		<Cursor fx:constant="DEFAULT" />
 	</cursor>
    <center>
-      <Pane prefHeight="523.0" prefWidth="1150.0" BorderPane.alignment="CENTER">
+      <Pane fx:id="pane" prefHeight="523.0" prefWidth="1150.0" BorderPane.alignment="CENTER">
          <children>
-      		<Button fx:id="openTask" layoutX="996.0" layoutY="576.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="140.0" text="Create new Task">
+      		<Button fx:id="openTaskButton" layoutX="996.0" layoutY="576.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="140.0" text="Create new Task">
                <font>
                   <Font size="15.0" />
                </font></Button>
-            <ListView fx:id="taskList" layoutX="14.0" layoutY="14.0" prefHeight="596.0" prefWidth="323.0" />
-            <Text fx:id="taskNameField" layoutX="352.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="#TaskTitle" wrappingWidth="727.1025390625">
-               <font>
-                  <Font size="22.0" />
-               </font>
-            </Text>
+            <ListView fx:id="taskList" layoutX="8.0" layoutY="13.0" prefHeight="591.0" prefWidth="329.0" />
             <Separator layoutX="352.0" layoutY="409.0" prefHeight="18.0" prefWidth="787.0" />
             <Button fx:id="runButton" layoutX="996.0" layoutY="378.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="140.0" text="Run">
                <font>
                   <Font size="15.0" />
                </font>
             </Button>
-            <Button fx:id="deleteButton" layoutX="699.0" layoutY="378.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="140.0" text="Delete">
+            <Button fx:id="deleteButton" layoutX="850.0" layoutY="378.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="73.0" text="Delete">
                <font>
                   <Font size="15.0" />
                </font>
             </Button>
-            <Button fx:id="editButton" layoutX="848.0" layoutY="378.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="140.0" text="Edit">
+            <Button fx:id="saveButton" layoutX="927.0" layoutY="378.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="61.0" text="Save">
                <font>
                   <Font size="15.0" />
                </font>
             </Button>
-            <Text layoutX="352.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Interval" wrappingWidth="70.1025390625">
+            <Text fx:id="intervalField" fill="WHITE" layoutX="348.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="00" wrappingWidth="70.1025390625">
                <font>
                   <Font size="17.0" />
                </font>
             </Text>
-            <Text fx:id="intervalField" layoutX="366.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="00" wrappingWidth="70.1025390625">
-               <font>
-                  <Font size="17.0" />
-               </font>
-            </Text>
-            <Text fx:id="unitField" layoutX="436.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Second(s)" wrappingWidth="107.1025390625">
-               <font>
-                  <Font size="17.0" />
-               </font>
-            </Text>
-            <TextField fx:id="folderField" layoutX="352.0" layoutY="219.0" prefHeight="25.0" prefWidth="365.0" />
-            <Text layoutX="352.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Output Folder" wrappingWidth="148.1025390625">
-               <font>
-                  <Font size="17.0" />
-               </font>
-            </Text>
-            <Button fx:id="changeFolderButton" layoutX="736.0" layoutY="217.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="115.0" text="Change Folder">
+            <TextField fx:id="folderField" layoutX="351.0" layoutY="217.0" prefHeight="29.0" prefWidth="379.0" text="dwdwadwawad" />
+            <Button fx:id="changeFolderButton" layoutX="736.0" layoutY="217.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="127.0" text="Change Folder">
                <font>
                   <Font size="13.0" />
                </font>
             </Button>
+            <Button fx:id="editButton" layoutX="784.0" layoutY="378.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="62.0" text="Edit">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Button>
+            <Label layoutX="352.0" layoutY="190.0" text="Output Folder" />
+            <Label fx:id="taskNameField" layoutX="352.0" layoutY="14.0" text="#Task Name" />
+            <Label layoutX="347.0" layoutY="75.0" text="Interval" />
+            <Label fx:id="unitField" layoutX="421.0" layoutY="97.0" text="Second(s)" />
          </children>
       </Pane>
    </center>
    <top>
-      <MenuBar prefHeight="0.0" prefWidth="1150.0" BorderPane.alignment="CENTER">
+      <MenuBar prefHeight="14.0" prefWidth="1150.0" BorderPane.alignment="CENTER">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
               <MenuItem mnemonicParsing="false" text="Close" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
+          <Menu mnemonicParsing="false" text="About">
             <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem mnemonicParsing="false" text="Check new Updates" />
             </items>
           </Menu>
         </menus>
