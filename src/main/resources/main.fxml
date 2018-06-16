@@ -42,12 +42,12 @@
                   <Font size="15.0" />
                </font>
             </Button>
-            <Text fx:id="intervalField" fill="WHITE" layoutX="348.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="00" wrappingWidth="70.1025390625">
+            <Text fx:id="intervalField" fill="WHITE" layoutX="348.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="70.1025390625">
                <font>
                   <Font size="17.0" />
                </font>
             </Text>
-            <TextField fx:id="folderField" layoutX="351.0" layoutY="217.0" prefHeight="29.0" prefWidth="379.0" text="dwdwadwawad" />
+            <TextField fx:id="folderField" layoutX="351.0" layoutY="217.0" prefHeight="29.0" prefWidth="379.0" />
             <Button fx:id="changeFolderButton" layoutX="736.0" layoutY="217.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="127.0" text="Change Folder">
                <font>
                   <Font size="13.0" />

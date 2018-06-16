@@ -36,6 +36,10 @@
     -fx-background-color: transparent;
 }
 
+.list-cell:selected{
+    -fx-background-color: #7d7d7d;
+}
+
 .list-cell .text {
     -fx-font-size: 13px;
     -fx-font-family: "Quicksand";

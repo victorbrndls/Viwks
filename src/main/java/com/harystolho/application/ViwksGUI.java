@@ -36,6 +36,9 @@ public class ViwksGUI extends Application {
 	 * Creates a new window and loads the main components.
 	 */
 	private void loadGUI(Stage stage) {
+		// I'm not sure why I need to do this but if I don't it doesn't work.
+		Main.setGUI(this);
+		
 		window = stage;
 		window.setTitle("Viwks");
 
@@ -47,9 +50,6 @@ public class ViwksGUI extends Application {
 		mainScene.getStylesheets().add(ViwksUtils.RESOURCES + "style.css");
 
 		setScene(mainScene);
-
-		// I'm not sure why I need to do this but if I don't it doesn't work.
-		Main.setGUI(this);
 
 		window.setOnCloseRequest((e) -> {
 			ViwksUtils.close();
@@ -120,7 +120,7 @@ public class ViwksGUI extends Application {
 		mainController = controller;
 	}
 
-	public Controller getMainController() {
+	public MainController getMainController() {
 		if (mainController != null) {
 			return mainController;
 		}

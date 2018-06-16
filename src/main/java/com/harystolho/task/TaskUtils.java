@@ -33,7 +33,7 @@ public class TaskUtils {
 		File folder = createSaveFolder();
 
 		try (FileOutputStream fos = new FileOutputStream(
-				new File(folder.getAbsolutePath() + "/" + UUID.randomUUID() + ".json"))) {
+				new File(folder.getAbsolutePath() + "/" + task.getId() + ".json"))) {
 
 			// Generates a JSON object containing the task's fields
 			fos.write(TaskUtils.generateJSON(task).toString().getBytes());
@@ -84,6 +84,16 @@ public class TaskUtils {
 		}
 
 		return tasks;
+	}
+
+	/**
+	 * Deletes a task from the folder
+	 * 
+	 * @param task
+	 */
+	public static void deleteTask(Task task) {
+		File taskFile = new File("tasks/" + task.getId() + ".json");
+		taskFile.delete();
 	}
 
 	/**

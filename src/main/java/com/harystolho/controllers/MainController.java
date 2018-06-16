@@ -73,6 +73,21 @@ public class MainController implements Controller {
 			openTaskWindow();
 		});
 
+		deleteButton.setOnMouseClicked((e) -> {
+			TaskUtils.deleteTask(currentTask);
+			loadTasks();
+
+			if (taskList.getItems().size() > 0) {
+				currentTask = taskList.getItems().get(0);
+				taskList.getSelectionModel().selectIndices(0);
+
+				updateTaskDisplay(currentTask);
+			} else {
+				clearTaskDisplay();
+			}
+
+		});
+
 		changeFolderButton.setOnMouseClicked((e) -> {
 			DirectoryChooser chooser = new DirectoryChooser();
 			chooser.setTitle("Choose a output folder");
@@ -81,12 +96,14 @@ public class MainController implements Controller {
 			outputFolder = chooser.showDialog(Main.getGUI().getWindow());
 
 			folderField.setText(outputFolder.getAbsolutePath());
-
+			updateAndSaveTask();
 		});
 
 		taskList.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newValue) -> {
-			currentTask = (Task) newValue;
-			updateTaskDisplay(currentTask);
+			if (newValue != null) {
+				currentTask = (Task) newValue;
+				updateTaskDisplay(currentTask);
+			}
 		});
 
 	}
@@ -103,9 +120,30 @@ public class MainController implements Controller {
 	}
 
 	/**
+	 * Clears the display box
+	 */
+	private void clearTaskDisplay() {
+
+		taskNameField.setText("#Task Name");
+
+		intervalField.setText("0");
+		unitField.setText("Second(s)");
+
+		folderField.setText("");
+	}
+
+	/**
+	 * Updates the {@link #currentTask} and saves it
+	 */
+	private void updateAndSaveTask() {
+		currentTask.setOutputFolder(outputFolder);
+		TaskUtils.saveTask(currentTask);
+	}
+
+	/**
 	 * Loads task from file and displays it
 	 */
-	private void loadTasks() {
+	public void loadTasks() {
 
 		taskList.getItems().clear();
 

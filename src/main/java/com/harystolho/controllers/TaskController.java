@@ -1,27 +1,11 @@
 package com.harystolho.controllers;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.nio.file.Files;
-
-import org.apache.commons.lang3.StringUtils;
-import org.jsoup.helper.StringUtil;
-
 import com.harystolho.Main;
 import com.harystolho.application.PageDownloader;
 import com.harystolho.task.Task;
-import com.harystolho.task.TaskUnit;
 import com.harystolho.task.TaskUtils;
-import com.harystolho.task.Task.TaskBuilder;
-import com.harystolho.task.Task.conf;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
@@ -91,6 +75,7 @@ public class TaskController implements Controller {
 	private void loadEventListeners() {
 
 		closeButton.setOnMouseClicked((e) -> {
+			Main.getGUI().getMainController().loadTasks();
 			Main.getGUI().setScene(Main.getGUI().getMainScene());
 		});
 
@@ -122,7 +107,7 @@ public class TaskController implements Controller {
 				valueSelectorButton.setText(((MenuItem) e.getTarget()).getText());
 			});
 		});
-		
+
 	}
 
 	/**
