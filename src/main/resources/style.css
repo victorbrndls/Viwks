@@ -1,0 +1,65 @@
+@font-face {
+    font-family: 'Quicksand';
+    src: url('Quicksand-Medium.ttf');
+}
+
+#pane, .list-view {
+    -fx-background-color: rgb(77, 77, 77);
+}
+
+.button {
+    -fx-background-color: #2E5ECC;
+    -fx-background-radius: 0;
+    -fx-text-fill: white;
+    -fx-font-family: "Quicksand";
+    -fx-font-size: 15px;
+}
+
+.text-field {
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-background-color: rgb(104, 104, 104);
+}
+
+.label {
+    -fx-font-size: 17px;
+    -fx-font-family: "Quicksand";
+    -fx-text-fill: white;
+}
+
+.list-view {
+    -fx-border-width: 0 2px 0 0;
+    -fx-border-color: rgb(104, 104, 104);
+}
+
+.list-cell:even, .list-cell:odd {
+    -fx-background-color: transparent;
+}
+
+.list-cell:selected{
+    -fx-background-color: #7d7d7d;
+}
+
+.list-cell .text {
+    -fx-font-size: 13px;
+    -fx-font-family: "Quicksand";
+    -fx-fill: white;
+}
+
+.separator:horizontal .line {
+    -fx-border-width: 1px;
+    -fx-border-color: rgb(104, 104, 104);
+}
+
+.menu-bar {
+    -fx-background-color: #2E5ECC;
+}
+
+.menu-bar .label {
+    -fx-font-size: 12px;
+}
+
+#taskNameField {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
