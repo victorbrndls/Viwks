@@ -8,6 +8,8 @@ import com.harystolho.application.PageDownloader;
 import com.harystolho.task.Task;
 import com.harystolho.task.TaskUnit;
 import com.harystolho.task.TaskUtils;
+import com.harystolho.utils.ViwksUtils;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -80,16 +82,22 @@ public class TaskController implements Controller {
 	private void loadEventListeners() {
 
 		closeButton.setOnMouseClicked((e) -> {
+			Main.getGUI().getMainController().setCurrentTask(currentTask);
+			// Loads new tasks
 			Main.getGUI().getMainController().loadTasks();
+			// Sets this Controller to null
 			Main.getGUI().setTaskController(null);
+			// Change to main Scene
 			Main.getGUI().setScene(Main.getGUI().getMainScene());
 		});
 
 		saveButton.setOnMouseClicked((e) -> {
 
 			updateTask();
-
 			TaskUtils.saveTask(currentTask);
+
+			ViwksUtils.addCssEffect(saveButton, "button-pressed", 250);
+
 		});
 
 		loadPageButton.setOnMouseClicked((e) -> {

@@ -15,6 +15,14 @@
     -fx-font-size: 15px; 
 }
 
+.button:pressed{
+    -fx-translate-y: 1px;
+}
+
+.button-pressed{
+    -fx-background-color: #356eff;
+}
+
 .text-field {
     -fx-background-radius: 0;
     -fx-border-radius: 0;
@@ -57,6 +65,14 @@
 
 .menu-bar .label {
     -fx-font-size: 12px;
+}
+
+.menu-bar .menu-item{
+    -fx-background-color: #2E5ECC;
+}
+
+.menu-bar .menu-item:hover{
+    -fx-background-color: #3974ff;
 }
 
 .task {

@@ -55,12 +55,14 @@ public class TaskUtils {
 	public static List<Task> loadTasks() {
 		List<Task> tasks = new ArrayList<>();
 
+		logger.log(Level.INFO, "Loading files");
+
 		createSaveFolder();
 
 		File[] taskFile = new File("tasks/").listFiles();
 
 		for (File f : taskFile) {
-			logger.log(Level.INFO, "Loading file: " + f.getName());
+			// logger.log(Level.INFO, "Loading file: " + f.getName());
 
 			StringBuffer sb = new StringBuffer();
 
