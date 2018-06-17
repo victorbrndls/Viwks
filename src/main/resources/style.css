@@ -59,7 +59,41 @@
     -fx-font-size: 12px;
 }
 
+.task {
+    -fx-background-color: rgb(104, 104, 104);
+}
+
+.task .menu-item{
+    -fx-background-color: rgb(104, 104, 104);
+}
+
+.task .menu-item:hover{
+    -fx-background-color: rgb(137, 137, 137);
+}
+
+.menu-button .label {
+    -fx-font-size: 12px;
+}
+
+.selectedText{
+    -fx-fill: white;
+    -fx-font-size: 18px;
+}
+
+.text-field{
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #adadad;
+}
+
+.progress-bar .track{
+    -fx-background-color: rgb(137, 137, 137);
+}
+
 #taskNameField {
     -fx-font-size: 22px;
     -fx-font-weight: bold;
+}
+
+#taskName{
+    -fx-font-size: 15px;
 }
