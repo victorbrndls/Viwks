@@ -38,7 +38,7 @@ public class ViwksGUI extends Application {
 	private void loadGUI(Stage stage) {
 		// I'm not sure why I need to do this but if I don't it doesn't work.
 		Main.setGUI(this);
-		
+
 		window = stage;
 		window.setTitle("Viwks");
 
@@ -99,7 +99,6 @@ public class ViwksGUI extends Application {
 			p = loader.load(new URL(ViwksUtils.RESOURCES + name));
 		} catch (IOException e) {
 			ViwksUtils.getLogger().log(Level.SEVERE, "Couldn't load the " + name + ".fxml file");
-			e.printStackTrace();
 		}
 
 		if (p == null) {

@@ -4,8 +4,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.CompletableFuture;
 
+import org.jsoup.helper.StringUtil;
+
 import com.harystolho.Main;
-import com.harystolho.application.PageDownloader;
+import com.harystolho.page.CustomTag;
+import com.harystolho.page.PageDownloader;
 import com.harystolho.task.Task;
 import com.harystolho.task.TaskUnit;
 import com.harystolho.task.TaskUtils;
@@ -17,6 +20,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
@@ -64,7 +68,10 @@ public class TaskController implements Controller {
 	private ToggleButton enableIdButton;
 
 	@FXML
-	private ListView<String> list;
+	private TextField listFilter;
+
+	@FXML
+	private ListView<CustomTag> tagList;
 
 	private Task currentTask;
 
@@ -77,6 +84,7 @@ public class TaskController implements Controller {
 
 		loadTask();
 
+		addCustomCellFactory();
 		loadEventListeners();
 	}
 
@@ -123,6 +131,26 @@ public class TaskController implements Controller {
 			});
 		});
 
+		tagList.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newValue) -> {
+			System.out.println(((CustomTag) newValue).getCssSelector());
+		});
+
+		listFilter.setOnKeyPressed((e) -> {
+
+			for (CustomTag tag : tagList.getItems()) {
+				if (tag != null) {
+					if (tag.getOuterHtml().contains(listFilter.getText())) {
+						tag.setVisible(true);
+					} else {
+						tag.setVisible(false);
+					}
+				}
+			}
+
+			tagList.getItems().add(null);
+
+		});
+
 	}
 
 	/**
@@ -145,15 +173,33 @@ public class TaskController implements Controller {
 
 		loadPageButton.setDisable(true);
 
-		page.downloadPage();
+		page.handlePageDownload();
 
 		loadPageButton.setDisable(false);
 
 	}
 
-	public void addToSelectorList(String item) {
+	private void addCustomCellFactory() {
+		tagList.setCellFactory(param -> new ListCell<CustomTag>() {
+
+			@Override
+			protected void updateItem(CustomTag item, boolean empty) {
+				super.updateItem(item, empty);
+
+				if (item == null || empty || !item.isVisible()) {
+					setGraphic(null);
+					setText(null);
+				} else {
+					setText(item.getOuterHtml());
+				}
+			}
+
+		});
+	}
+
+	public void addToSelectorList(CustomTag tag) {
 		Platform.runLater(() -> {
-			list.getItems().add(item);
+			tagList.getItems().add(tag);
 		});
 	}
 

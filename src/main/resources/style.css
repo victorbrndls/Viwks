@@ -105,6 +105,22 @@
     -fx-background-color: rgb(137, 137, 137);
 }
 
+.titled-pane .title {
+    -fx-background-color: transparent;
+}
+
+.titled-pane .title .text{
+    -fx-fill: white;
+}
+
+.titled-pane .content{
+    -fx-border-width: 0;
+}
+
+.logList{
+    -fx-border-width: 0;
+}
+
 #taskNameField {
     -fx-font-size: 22px;
     -fx-font-weight: bold;

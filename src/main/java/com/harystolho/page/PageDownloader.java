@@ -1,4 +1,4 @@
-package com.harystolho.application;
+package com.harystolho.page;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -11,12 +11,13 @@ import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import com.harystolho.Main;
 import com.harystolho.controllers.TaskController;
-import com.harystolho.task.TaskUnit;
 import com.harystolho.utils.ViwksUtils;
 
 import javafx.application.Platform;
@@ -26,13 +27,11 @@ import javafx.scene.control.Alert.AlertType;
 public class PageDownloader {
 
 	private static final Logger logger = Logger.getLogger(PageDownloader.class.getName());
+	private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0";
 
 	private String url;
 
 	private Document page;
-
-	private String title;
-	private Date downloadDate;
 
 	public PageDownloader(String url) {
 		this.url = url;
@@ -41,38 +40,49 @@ public class PageDownloader {
 	/**
 	 * Downloads the page
 	 */
-	public void downloadPage() {
-		if (url == null) {
-			logger.log(Level.INFO, "Can't download page because the URL is null");
-			return;
-		}
+	public void handlePageDownload() {
 
-		FutureTask<Document> doc = new FutureTask<Document>(() -> {
-			return Jsoup.connect(url).get();
-		});
-		ViwksUtils.getExecutor().submit(doc);
-
-		try {
-			page = doc.get(15, TimeUnit.MINUTES);
-		} catch (ExecutionException e) {
-			showAlert("Invalid URL", "The URL is not valid");
-			return;
-		} catch (Exception e) {
-			showAlert("Error", "Something went wrong");
-			logger.log(Level.SEVERE, "Couldn't get the page from FutureTask");
-			return;
-		}
-
-		if (page == null) {
-			showAlert("Invalid URL", "The URL is not valid");
-			logger.log(Level.SEVERE, "Couldn't retrieve page or page is null");
+		if ((page = downloadPage()) == null) {
 			return;
 		}
 
 		TaskController controller = Main.getGUI().getTaskController();
 
-		controller.addToSelectorList(url);
+		for (Element e : page.getAllElements()) {
+			
+			CustomTag tag = new CustomTag(handleHtmlTag(e.outerHtml()), e.cssSelector());
+			controller.addToSelectorList(tag);
+			
+		}
+		
+	}
 
+	private String handleHtmlTag(String outerHtml) {
+		return StringUtils.splitPreserveAllTokens(outerHtml, ">")[0] + ">";
+	}
+
+	private Document downloadPage() {
+		if (url == null) {
+			showAlert("Invalid URL", "The URL is not valid");
+			logger.log(Level.INFO, "Can't download page because the URL is null");
+			return null;
+		}
+
+		FutureTask<Document> doc = new FutureTask<Document>(() -> {
+			return Jsoup.connect(url).userAgent(USER_AGENT).get();
+		});
+		ViwksUtils.getExecutor().submit(doc);
+
+		try {
+			return doc.get(15, TimeUnit.MINUTES);
+		} catch (ExecutionException e) {
+			showAlert("Invalid URL", "The URL is not valid");
+			return null;
+		} catch (Exception e) {
+			showAlert("Error", "Something went wrong");
+			logger.log(Level.SEVERE, "Couldn't get the page from FutureTask");
+			return null;
+		}
 	}
 
 	private void showAlert(String title, String msg) {
