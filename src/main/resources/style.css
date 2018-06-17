@@ -12,7 +12,7 @@
     -fx-background-radius: 0;
     -fx-text-fill: white;
     -fx-font-family: "Quicksand";
-    -fx-font-size: 15px;
+    -fx-font-size: 15px; 
 }
 
 .text-field {
