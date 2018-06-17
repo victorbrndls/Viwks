@@ -152,12 +152,6 @@ public class Task {
 		if (url != null) {
 			return url;
 		}
-
-		try {
-			return new URL("https://");
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
 		return null;
 	}
 

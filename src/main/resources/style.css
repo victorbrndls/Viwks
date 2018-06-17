@@ -113,3 +113,7 @@
 #taskName{
     -fx-font-size: 15px;
 }
+
+#loadPage:disabled{
+    -fx-background-color: #3974ff;
+}

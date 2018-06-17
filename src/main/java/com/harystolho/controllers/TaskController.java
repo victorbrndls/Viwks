@@ -2,6 +2,7 @@ package com.harystolho.controllers;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.CompletableFuture;
 
 import com.harystolho.Main;
 import com.harystolho.application.PageDownloader;
@@ -10,7 +11,10 @@ import com.harystolho.task.TaskUnit;
 import com.harystolho.task.TaskUtils;
 import com.harystolho.utils.ViwksUtils;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -19,6 +23,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.text.Text;
+import javafx.stage.Popup;
 
 public class TaskController implements Controller {
 
@@ -59,9 +64,8 @@ public class TaskController implements Controller {
 	private ToggleButton enableIdButton;
 
 	@FXML
-	private ListView<?> list;
+	private ListView<String> list;
 
-	private PageDownloader page;
 	private Task currentTask;
 
 	@FXML
@@ -102,15 +106,9 @@ public class TaskController implements Controller {
 
 		loadPageButton.setOnMouseClicked((e) -> {
 
-			if (isURLValid(urlField.getText())) {
-				page = new PageDownloader(urlField.getText());
-			} else {
-				// TODO show pop up
-				return;
-			}
-
-			page.downloadPage();
-
+			ViwksUtils.getExecutor().submit(() -> {
+				downloadPage();
+			});
 		});
 
 		unitButton.getItems().forEach((item) -> {
@@ -125,6 +123,38 @@ public class TaskController implements Controller {
 			});
 		});
 
+	}
+
+	/**
+	 * Downloads a web page using the URL in the {@link #urlField}
+	 */
+	private void downloadPage() {
+
+		PageDownloader page;
+
+		// TODO check if the URL is valid
+		if (isURLValid(urlField.getText())) {
+			page = new PageDownloader(urlField.getText());
+		} else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setHeaderText("Invalid URL");
+			alert.setContentText(urlField.getText() + " is not a valid URL");
+			alert.showAndWait();
+			return;
+		}
+
+		loadPageButton.setDisable(true);
+
+		page.downloadPage();
+
+		loadPageButton.setDisable(false);
+
+	}
+
+	public void addToSelectorList(String item) {
+		Platform.runLater(() -> {
+			list.getItems().add(item);
+		});
 	}
 
 	/**
@@ -199,11 +229,13 @@ public class TaskController implements Controller {
 	public void loadTask(Task task) {
 
 		if (task.getURL() != null) {
-			urlField.setText(currentTask.getURL().toString());
-			// Moves the cursor to the end of the string
-			urlField.selectEnd();
-			urlField.forward();
+			urlField.setText(task.getURL().toString());
+		} else {
+			urlField.setText("https://");
 		}
+		// Moves the cursor to the end of the string
+		urlField.selectEnd();
+		urlField.forward();
 
 		taskNameField.setText(task.getName());
 
@@ -248,7 +280,7 @@ public class TaskController implements Controller {
 	 * @return true if it's valid
 	 */
 	private boolean isURLValid(String url) {
-		return true; // TODO check if the url is valid
+		return true;
 	}
 
 }
