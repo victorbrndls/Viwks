@@ -29,6 +29,7 @@ public class Task {
 	private URL url;
 	private int interval;
 	private TaskUnit unit;
+	private String selected;
 	private String selector;
 	private File outputFolder;
 	Properties configs;
@@ -46,6 +47,7 @@ public class Task {
 		private URL url;
 		private int interval;
 		private TaskUnit unit;
+		private String selected;
 		private String selector;
 		private File outputFolder;
 		Properties configs;
@@ -63,6 +65,7 @@ public class Task {
 			// url is not set
 			this.interval = 1;
 			this.unit = TaskUnit.MINUTE;
+			this.selected = "";
 			this.selector = "value";
 			this.outputFolder = new File("/");
 			this.configs = new Properties();
@@ -94,6 +97,11 @@ public class Task {
 			return this;
 		}
 
+		public TaskBuilder setSelected(String selected) {
+			this.selected = selected;
+			return this;
+		}
+
 		public TaskBuilder setSelector(String selector) {
 			this.selector = selector;
 			return this;
@@ -118,6 +126,7 @@ public class Task {
 			task.url = this.url;
 			task.interval = this.interval;
 			task.unit = this.unit;
+			task.selected = this.selected;
 			task.selector = this.selector;
 			task.outputFolder = this.outputFolder;
 			task.configs = this.configs;
@@ -170,6 +179,14 @@ public class Task {
 
 	public void setUnit(TaskUnit unit) {
 		this.unit = unit;
+	}
+
+	public String getSelected() {
+		return this.selected;
+	}
+
+	public void setSelected(String selected) {
+		this.selected = selected;
 	}
 
 	public String getSelector() {

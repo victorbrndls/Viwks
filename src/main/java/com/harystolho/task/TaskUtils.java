@@ -94,6 +94,7 @@ public class TaskUtils {
 	public static void deleteTask(Task task) {
 		File taskFile = new File("tasks/" + task.getId() + ".json");
 		taskFile.delete();
+		logger.log(Level.INFO, "Deleting file: " + task.getName());
 	}
 
 	/**

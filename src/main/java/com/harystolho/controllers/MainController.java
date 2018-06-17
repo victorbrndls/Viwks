@@ -6,6 +6,7 @@ import com.harystolho.Main;
 import com.harystolho.application.ViwksGUI;
 import com.harystolho.task.Task;
 import com.harystolho.task.TaskUtils;
+import com.harystolho.utils.ViwksUtils;
 
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -69,13 +70,34 @@ public class MainController implements Controller {
 
 	private void loadEventListeners() {
 
-		openTaskButton.setOnMouseClicked((e) -> {
-			openTaskWindow();
+		changeFolderButton.setOnMouseClicked((e) -> {
+			DirectoryChooser chooser = new DirectoryChooser();
+			chooser.setTitle("Choose a output folder");
+
+			// TODO check if the directory is valid
+			outputFolder = chooser.showDialog(Main.getGUI().getWindow());
+
+			if (outputFolder != null) {
+				folderField.setText(outputFolder.getAbsolutePath());
+				updateAndSaveTask();
+			}
+		});
+
+		editButton.setOnAction((e) -> {
+
+			if (currentTask != null) {
+				openTaskWindow();
+				Main.getGUI().getTaskController().loadTask(currentTask);
+			}
+
 		});
 
 		deleteButton.setOnMouseClicked((e) -> {
-			TaskUtils.deleteTask(currentTask);
-			loadTasks();
+			if (currentTask != null) {
+				TaskUtils.deleteTask(currentTask);
+				currentTask = null;
+				loadTasks();
+			}
 
 			if (taskList.getItems().size() > 0) {
 				currentTask = taskList.getItems().get(0);
@@ -88,15 +110,8 @@ public class MainController implements Controller {
 
 		});
 
-		changeFolderButton.setOnMouseClicked((e) -> {
-			DirectoryChooser chooser = new DirectoryChooser();
-			chooser.setTitle("Choose a output folder");
-
-			// TODO check if the directory is valid
-			outputFolder = chooser.showDialog(Main.getGUI().getWindow());
-
-			folderField.setText(outputFolder.getAbsolutePath());
-			updateAndSaveTask();
+		openTaskButton.setOnMouseClicked((e) -> {
+			openTaskWindow();
 		});
 
 		taskList.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newValue) -> {
@@ -108,6 +123,11 @@ public class MainController implements Controller {
 
 	}
 
+	/**
+	 * Updates the display on the right
+	 * 
+	 * @param task
+	 */
 	private void updateTaskDisplay(Task task) {
 
 		taskNameField.setText(task.getName());
@@ -124,7 +144,7 @@ public class MainController implements Controller {
 	 */
 	private void clearTaskDisplay() {
 
-		taskNameField.setText("#Task Name");
+		taskNameField.setText("Task #");
 
 		intervalField.setText("0");
 		unitField.setText("Second(s)");
@@ -155,6 +175,7 @@ public class MainController implements Controller {
 	private void openTaskWindow() {
 		// TODO This may cause a memory leak problem
 		Scene taskScene = new Scene(ViwksGUI.loadFXML("taskCreator.fxml"));
+		taskScene.getStylesheets().add(ViwksUtils.RESOURCES + "style.css");
 
 		Main.getGUI().setScene(taskScene);
 

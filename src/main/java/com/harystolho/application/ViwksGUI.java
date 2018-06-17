@@ -131,7 +131,7 @@ public class ViwksGUI extends Application {
 		taskController = controller;
 	}
 
-	public Controller getTaskController() {
+	public TaskController getTaskController() {
 		if (taskController != null) {
 			return taskController;
 		}

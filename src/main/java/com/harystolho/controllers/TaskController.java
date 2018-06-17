@@ -1,8 +1,12 @@
 package com.harystolho.controllers;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import com.harystolho.Main;
 import com.harystolho.application.PageDownloader;
 import com.harystolho.task.Task;
+import com.harystolho.task.TaskUnit;
 import com.harystolho.task.TaskUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -76,10 +80,14 @@ public class TaskController implements Controller {
 
 		closeButton.setOnMouseClicked((e) -> {
 			Main.getGUI().getMainController().loadTasks();
+			Main.getGUI().setTaskController(null);
 			Main.getGUI().setScene(Main.getGUI().getMainScene());
 		});
 
 		saveButton.setOnMouseClicked((e) -> {
+
+			updateTask();
+
 			TaskUtils.saveTask(currentTask);
 		});
 
@@ -111,6 +119,54 @@ public class TaskController implements Controller {
 	}
 
 	/**
+	 * Updates the {@link #currentTask} object using fields in the gui
+	 */
+	private void updateTask() {
+
+		try {
+			currentTask.setURL(new URL(urlField.getText()));
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+
+		currentTask.setName(taskNameField.getText());
+		currentTask.setSelected(selectorField.getText());
+		currentTask.setInterval(Integer.valueOf(intervalField.getText()));
+		currentTask.setUnit(getUnitButtonUnit());
+		currentTask.setSelector(valueSelectorButton.getText());
+
+		if (enableClassButton.isSelected()) {
+			currentTask.getConfigs().put(Task.conf.ENABLE_CLASS, true);
+		} else {
+			currentTask.getConfigs().put(Task.conf.ENABLE_CLASS, false);
+		}
+
+		if (enableIdButton.isSelected()) {
+			currentTask.getConfigs().put(Task.conf.ENABLE_ID, true);
+		} else {
+			currentTask.getConfigs().put(Task.conf.ENABLE_ID, false);
+		}
+
+	}
+
+	private TaskUnit getUnitButtonUnit() {
+
+		switch (unitButton.getText()) {
+		case "Second(s)":
+			return TaskUnit.SECOND;
+		case "Minute(s)":
+			return TaskUnit.MINUTE;
+		case "Hour(s)":
+			return TaskUnit.HOUR;
+		case "Day(s)":
+			return TaskUnit.DAY;
+		default:
+			return TaskUnit.MINUTE;
+		}
+
+	}
+
+	/**
 	 * Creates a new task with default configuration
 	 * 
 	 * @return {@link com.harystolho.task.Task Task}
@@ -126,32 +182,45 @@ public class TaskController implements Controller {
 	/**
 	 * Loads data from {@link #currentTask} and displays it in the application
 	 */
-	public void loadTask() {
 
-		if (currentTask.getURL() != null) {
+	public void loadTask() {
+		loadTask(currentTask);
+	}
+
+	public void loadTask(Task task) {
+
+		if (task.getURL() != null) {
 			urlField.setText(currentTask.getURL().toString());
 			// Moves the cursor to the end of the string
 			urlField.selectEnd();
 			urlField.forward();
 		}
 
-		taskNameField.setText(currentTask.getName());
+		taskNameField.setText(task.getName());
 
-		selectorField.setText(currentTask.getSelector());
+		selectorField.setText(task.getSelected());
 
-		valueSelectorButton.setText(currentTask.getSelector());
+		valueSelectorButton.setText(task.getSelector());
 
-		intervalField.setText(currentTask.getInterval() + "");
+		intervalField.setText(task.getInterval() + "");
 
-		unitButton.setText(currentTask.getUnit().getName());
+		unitButton.setText(task.getUnit().getName());
 
-		if (!(boolean) currentTask.getConfigs().get(Task.conf.ENABLE_CLASS)) {
+		valueSelectorButton.setText(task.getSelector());
+
+		if ((boolean) task.getConfigs().get(Task.conf.ENABLE_CLASS)) {
 			enableClassButton.setSelected(true);
+		} else {
+			enableClassButton.setSelected(false);
 		}
 
-		if (!(boolean) currentTask.getConfigs().get(Task.conf.ENABLE_ID)) {
+		if ((boolean) task.getConfigs().get(Task.conf.ENABLE_ID)) {
 			enableIdButton.setSelected(true);
+		} else {
+			enableIdButton.setSelected(false);
 		}
+
+		currentTask = task;
 
 	}
 
