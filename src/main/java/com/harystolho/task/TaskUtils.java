@@ -192,7 +192,6 @@ public class TaskUtils {
 		task.getConfigs().put(Task.conf.ENABLE_CLASS, enableClass.getBoolean("enabled"));
 		task.getConfigs().put(Task.conf.ENABLE_ID, enableId.getBoolean("enabled"));
 
-		// TODO handle if things don't work out
 		// TODO write tests
 
 		return task;

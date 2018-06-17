@@ -65,7 +65,7 @@ public class MainController implements Controller {
 		Main.getGUI().setMainController(this);
 
 		loadTasks();
-
+		
 		loadEventListeners();
 	}
 
@@ -77,7 +77,7 @@ public class MainController implements Controller {
 
 			// TODO check if the directory is valid
 			outputFolder = chooser.showDialog(Main.getGUI().getWindow());
-
+			
 			if (outputFolder != null) {
 				folderField.setText(outputFolder.getAbsolutePath());
 				updateAndSaveTask();

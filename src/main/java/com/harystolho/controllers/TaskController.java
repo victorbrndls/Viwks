@@ -2,9 +2,11 @@ package com.harystolho.controllers;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.concurrent.CompletableFuture;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
 
-import org.jsoup.helper.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import com.harystolho.Main;
 import com.harystolho.page.CustomTag;
@@ -26,8 +28,6 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.text.Text;
-import javafx.stage.Popup;
 
 public class TaskController implements Controller {
 
@@ -72,12 +72,15 @@ public class TaskController implements Controller {
 
 	@FXML
 	private ListView<CustomTag> tagList;
+	private List<CustomTag> temp;
 
 	private Task currentTask;
 
 	@FXML
 	void initialize() {
 		Main.getGUI().setTaskController(this);
+
+		temp = new ArrayList<>();
 
 		if (currentTask == null)
 			currentTask = createDefaultTask();
@@ -135,19 +138,34 @@ public class TaskController implements Controller {
 			System.out.println(((CustomTag) newValue).getCssSelector());
 		});
 
+		// TODO improve the filter to use only 1 list, if possible
 		listFilter.setOnKeyPressed((e) -> {
 
-			for (CustomTag tag : tagList.getItems()) {
+			ListIterator<CustomTag> iterator = tagList.getItems().listIterator();
+
+			while (iterator.hasNext()) {
+				CustomTag tag = iterator.next();
+
 				if (tag != null) {
-					if (tag.getOuterHtml().contains(listFilter.getText())) {
-						tag.setVisible(true);
-					} else {
-						tag.setVisible(false);
+					if (!StringUtils.contains(tag.getOuterHtml(), listFilter.getText())) {
+						temp.add(tag);
+						iterator.remove();
 					}
 				}
 			}
 
-			tagList.getItems().add(null);
+			iterator = temp.listIterator();
+
+			while (iterator.hasNext()) {
+				CustomTag tag = iterator.next();
+
+				if (tag != null) {
+					if (StringUtils.contains(tag.getOuterHtml(), listFilter.getText())) {
+						tagList.getItems().add(tag);
+						iterator.remove();
+					}
+				}
+			}
 
 		});
 
@@ -186,11 +204,13 @@ public class TaskController implements Controller {
 			protected void updateItem(CustomTag item, boolean empty) {
 				super.updateItem(item, empty);
 
-				if (item == null || empty || !item.isVisible()) {
-					setGraphic(null);
+				if (item == null || empty) {
 					setText(null);
+					setGraphic(null);
 				} else {
-					setText(item.getOuterHtml());
+					if (item.isVisible()) {
+						setText(item.getOuterHtml());
+					}
 				}
 			}
 

@@ -5,7 +5,7 @@ public class CustomTag {
 	private String outerHtml;
 	private String cssSelector;
 	private boolean isVisible;
-
+	
 	public CustomTag(String outerHtml, String cssSelector) {
 		this.outerHtml = outerHtml;
 		this.cssSelector = cssSelector;
