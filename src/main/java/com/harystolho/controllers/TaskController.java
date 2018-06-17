@@ -10,6 +10,7 @@ import com.harystolho.task.TaskUnit;
 import com.harystolho.task.TaskUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
@@ -35,7 +36,7 @@ public class TaskController implements Controller {
 	private MenuButton unitButton;
 
 	@FXML
-	private Text valueText;
+	private Label valueText;
 
 	@FXML
 	private MenuButton valueSelectorButton;
