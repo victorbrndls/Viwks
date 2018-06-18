@@ -69,8 +69,8 @@ public class Task {
 			this.selector = "value";
 			this.outputFolder = new File("/");
 			this.configs = new Properties();
-			this.configs.put(conf.ENABLE_CLASS, false);
-			this.configs.put(conf.ENABLE_ID, false);
+			this.configs.put(conf.ENABLE_CLASS, true);
+			this.configs.put(conf.ENABLE_ID, true);
 		}
 
 		public int getId() {

@@ -38,29 +38,46 @@ public class PageDownloader {
 	}
 
 	/**
-	 * Downloads the page
+	 * Downloads the web page, lists all the nodes and put them in the
+	 * {@link TaskController} ListView.
 	 */
 	public void handlePageDownload() {
 
+		// Download the page
 		if ((page = downloadPage()) == null) {
 			return;
 		}
 
 		TaskController controller = Main.getGUI().getTaskController();
 
-		for (Element e : page.getAllElements()) {
-			
-			CustomTag tag = new CustomTag(handleHtmlTag(e.outerHtml()), e.cssSelector());
-			controller.addToSelectorList(tag);
-			
+		getAllElements(page.select("head").get(0), controller);
+		getAllElements(page.select("body").get(0), controller);
+
+	}
+
+	private void getAllElements(Element e, TaskController controller) {
+
+		CustomTag tag = new CustomTag(handleHtmlTag(e.outerHtml()), e.cssSelector());
+		// Adds the element to the list
+		controller.addToSelectorList(tag);
+
+		if (e.children().size() > 0) {
+			for (Element child : e.children()) {
+				getAllElements(child, controller);
+			}
 		}
-		
+
 	}
 
 	private String handleHtmlTag(String outerHtml) {
 		return StringUtils.splitPreserveAllTokens(outerHtml, ">")[0] + ">";
 	}
 
+	/**
+	 * Downloads the web page and return a {@link Document} containing it.
+	 * 
+	 * @return a {@link Document} containing the page.
+	 */
 	private Document downloadPage() {
 		if (url == null) {
 			showAlert("Invalid URL", "The URL is not valid");
@@ -71,6 +88,7 @@ public class PageDownloader {
 		FutureTask<Document> doc = new FutureTask<Document>(() -> {
 			return Jsoup.connect(url).userAgent(USER_AGENT).get();
 		});
+
 		ViwksUtils.getExecutor().submit(doc);
 
 		try {

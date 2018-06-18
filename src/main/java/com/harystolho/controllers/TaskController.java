@@ -87,7 +87,6 @@ public class TaskController implements Controller {
 
 		loadTask();
 
-		addCustomCellFactory();
 		loadEventListeners();
 	}
 
@@ -195,26 +194,6 @@ public class TaskController implements Controller {
 
 		loadPageButton.setDisable(false);
 
-	}
-
-	private void addCustomCellFactory() {
-		tagList.setCellFactory(param -> new ListCell<CustomTag>() {
-
-			@Override
-			protected void updateItem(CustomTag item, boolean empty) {
-				super.updateItem(item, empty);
-
-				if (item == null || empty) {
-					setText(null);
-					setGraphic(null);
-				} else {
-					if (item.isVisible()) {
-						setText(item.getOuterHtml());
-					}
-				}
-			}
-
-		});
 	}
 
 	public void addToSelectorList(CustomTag tag) {
