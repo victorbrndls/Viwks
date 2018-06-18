@@ -28,6 +28,8 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.text.Text;
 
 public class TaskController implements Controller {
 
@@ -36,6 +38,9 @@ public class TaskController implements Controller {
 
 	@FXML
 	private Button loadPageButton;
+
+	@FXML
+	private FlowPane flowPane;
 
 	@FXML
 	private TextField selectorField;
@@ -75,6 +80,8 @@ public class TaskController implements Controller {
 	private List<CustomTag> temp;
 
 	private Task currentTask;
+
+	private PageDownloader page;
 
 	@FXML
 	void initialize() {
@@ -134,10 +141,10 @@ public class TaskController implements Controller {
 		});
 
 		tagList.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newValue) -> {
-			System.out.println(((CustomTag) newValue).getCssSelector());
+			displayTagInformation((CustomTag) newValue);
 		});
 
-		// TODO improve the filter to use only 1 list, if possible
+		// TODO improve the filter to use only 1 list, if possible, try using LinkedList
 		listFilter.setOnKeyPressed((e) -> {
 
 			ListIterator<CustomTag> iterator = tagList.getItems().listIterator();
@@ -171,11 +178,34 @@ public class TaskController implements Controller {
 	}
 
 	/**
+	 * Displays information about the tag on the right pane.
+	 * 
+	 * @param tag
+	 */
+	private void displayTagInformation(CustomTag tag) {
+
+		flowPane.getChildren().clear();
+
+		for (String s : tag.getClasses()) {
+			Label text = new Label(s);
+			text.getStyleClass().add("flowPaneText");
+			flowPane.getChildren().add(text);
+		}
+
+		Label text = new Label(tag.getId());
+		text.getStyleClass().add("flowPaneText");
+		flowPane.getChildren().add(text);
+
+	}
+
+	/**
 	 * Downloads a web page using the URL in the {@link #urlField}
 	 */
 	private void downloadPage() {
 
-		PageDownloader page;
+		Platform.runLater(() -> {
+			tagList.getItems().clear();
+		});
 
 		// TODO check if the URL is valid
 		if (isURLValid(urlField.getText())) {
@@ -196,7 +226,7 @@ public class TaskController implements Controller {
 
 	}
 
-	public void addToSelectorList(CustomTag tag) {
+	public void addTagToSelectorList(CustomTag tag) {
 		Platform.runLater(() -> {
 			tagList.getItems().add(tag);
 		});

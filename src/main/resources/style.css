@@ -121,6 +121,13 @@
     -fx-border-width: 0;
 }
 
+.flowPaneText{
+    -fx-font-size: 15px;
+    -fx-font-family: "Quicksand";
+    -fx-fill: white;
+    -fx-padding: 7px;
+}
+
 #taskNameField {
     -fx-font-size: 22px;
     -fx-font-weight: bold;

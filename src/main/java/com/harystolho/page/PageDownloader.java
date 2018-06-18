@@ -1,18 +1,14 @@
 package com.harystolho.page;
 
-import java.io.IOException;
-import java.net.UnknownHostException;
-import java.util.Date;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
+import org.jsoup.helper.HttpConnection;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
@@ -50,16 +46,25 @@ public class PageDownloader {
 
 		TaskController controller = Main.getGUI().getTaskController();
 
+		// TODO it's not getting all node, fix it
 		getAllElements(page.select("head").get(0), controller);
 		getAllElements(page.select("body").get(0), controller);
+
+		System.out.println(page.select("body").get(0));
 
 	}
 
 	private void getAllElements(Element e, TaskController controller) {
 
-		CustomTag tag = new CustomTag(handleHtmlTag(e.outerHtml()), e.cssSelector());
-		// Adds the element to the list
-		controller.addToSelectorList(tag);
+		if (filterTag(e.tagName())) {
+			CustomTag tag = new CustomTag(handleHtmlTag(e.outerHtml()), e.cssSelector());
+			// Add element's classes
+			tag.addClasses(e.classNames());
+			// Add element's id
+			tag.setId(e.id());
+			// Adds the element to the list
+			controller.addTagToSelectorList(tag);
+		}
 
 		if (e.children().size() > 0) {
 			for (Element child : e.children()) {
@@ -67,6 +72,18 @@ public class PageDownloader {
 			}
 		}
 
+	}
+
+	/**
+	 * Filter Nodes.
+	 * 
+	 * @param tagName
+	 *            the tag
+	 * @return true if the node is allowed
+	 */
+	private boolean filterTag(String tagName) {
+		// TODO Tag Filter
+		return true;
 	}
 
 	private String handleHtmlTag(String outerHtml) {
