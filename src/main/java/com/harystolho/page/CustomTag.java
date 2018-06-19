@@ -57,9 +57,7 @@ public class CustomTag {
 	}
 
 	public void setId(String id) {
-		if (!id.isEmpty()) {
-			this.id = "#" + id;
-		}
+		this.id = "#" + id;
 	}
 
 	public String getId() {

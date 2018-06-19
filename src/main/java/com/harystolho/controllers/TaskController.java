@@ -79,6 +79,8 @@ public class TaskController implements Controller {
 	private ListView<CustomTag> tagList;
 	private List<CustomTag> temp;
 
+	private String filterText = "";
+
 	private Task currentTask;
 
 	private PageDownloader page;
@@ -102,15 +104,8 @@ public class TaskController implements Controller {
 	 */
 	private void loadEventListeners() {
 
-		closeButton.setOnMouseClicked((e) -> {
-			Main.getGUI().getMainController().setCurrentTask(currentTask);
-			// Loads new tasks
-			Main.getGUI().getMainController().loadTasks();
-			// Sets this Controller to null
-			Main.getGUI().setTaskController(null);
-			// Change to main Scene
-			Main.getGUI().setScene(Main.getGUI().getMainScene());
-		});
+		filterKeyPress();
+		closeMouseClick();
 
 		saveButton.setOnMouseClicked((e) -> {
 
@@ -144,35 +139,12 @@ public class TaskController implements Controller {
 			displayTagInformation((CustomTag) newValue);
 		});
 
-		// TODO improve the filter to use only 1 list, if possible, try using LinkedList
-		listFilter.setOnKeyPressed((e) -> {
+		enableClassButton.setOnAction((e) -> {
+			filter();
+		});
 
-			ListIterator<CustomTag> iterator = tagList.getItems().listIterator();
-
-			while (iterator.hasNext()) {
-				CustomTag tag = iterator.next();
-
-				if (tag != null) {
-					if (!StringUtils.contains(tag.getOuterHtml(), listFilter.getText())) {
-						temp.add(tag);
-						iterator.remove();
-					}
-				}
-			}
-
-			iterator = temp.listIterator();
-
-			while (iterator.hasNext()) {
-				CustomTag tag = iterator.next();
-
-				if (tag != null) {
-					if (StringUtils.contains(tag.getOuterHtml(), listFilter.getText())) {
-						tagList.getItems().add(tag);
-						iterator.remove();
-					}
-				}
-			}
-
+		enableIdButton.setOnAction((e) -> {
+			filter();
 		});
 
 	}
@@ -185,6 +157,10 @@ public class TaskController implements Controller {
 	private void displayTagInformation(CustomTag tag) {
 
 		flowPane.getChildren().clear();
+
+		if (tag == null) {
+			return;
+		}
 
 		for (String s : tag.getClasses()) {
 			Label text = new Label(s);
@@ -337,6 +313,96 @@ public class TaskController implements Controller {
 		}
 
 		currentTask = task;
+
+	}
+
+	private void filter() {
+		boolean enableClass = enableClassButton.isSelected();
+		boolean enableId = enableIdButton.isSelected();
+
+		ListIterator<CustomTag> iterator = tagList.getItems().listIterator();
+
+		while (iterator.hasNext()) {
+			CustomTag tag = iterator.next();
+
+			if (tag != null) {
+				if (StringUtils.contains(tag.getOuterHtml(), listFilter.getText())) {
+					if (!tag.getClasses().isEmpty()) {
+						if (!enableClass) {
+							temp.add(tag);
+							iterator.remove();
+						} else {
+							if (tag.getId() != null) {
+								if (!enableId) {
+									temp.add(tag);
+									iterator.remove();
+								}
+							}
+						}
+					} else {
+						if (tag.getId() != null) {
+							if (!enableId) {
+								temp.add(tag);
+								iterator.remove();
+							}
+						}
+					}
+				} else {
+					temp.add(tag);
+					iterator.remove();
+				}
+			}
+		}
+
+		iterator = temp.listIterator();
+
+		while (iterator.hasNext()) {
+			CustomTag tag = iterator.next();
+
+			if (tag != null) {
+				if (StringUtils.contains(tag.getOuterHtml(), listFilter.getText())) {
+					if (!tag.getClasses().isEmpty()) {
+						if (!enableClass) {
+							tagList.getItems().add(tag);
+							iterator.remove();
+						} else {
+							if (tag.getId() != null) {
+								if (!enableId) {
+									tagList.getItems().add(tag);
+									iterator.remove();
+								}
+							}
+						}
+					} else {
+						if (tag.getId() != null) {
+							if (!enableId) {
+								tagList.getItems().add(tag);
+								iterator.remove();
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private void closeMouseClick() {
+		closeButton.setOnMouseClicked((e) -> {
+			Main.getGUI().getMainController().setCurrentTask(currentTask);
+			// Loads new tasks
+			Main.getGUI().getMainController().loadTasks();
+			// Sets this Controller to null
+			Main.getGUI().setTaskController(null);
+			// Change to main Scene
+			Main.getGUI().setScene(Main.getGUI().getMainScene());
+		});
+	}
+
+	// TODO improve the filter to use only 1 list, if possible, try using LinkedList
+	private void filterKeyPress() {
+		listFilter.setOnKeyPressed((e) -> {
+			filter();
+		});
 
 	}
 

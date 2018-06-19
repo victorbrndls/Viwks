@@ -50,8 +50,6 @@ public class PageDownloader {
 		getAllElements(page.select("head").get(0), controller);
 		getAllElements(page.select("body").get(0), controller);
 
-		System.out.println(page.select("body").get(0));
-
 	}
 
 	private void getAllElements(Element e, TaskController controller) {
