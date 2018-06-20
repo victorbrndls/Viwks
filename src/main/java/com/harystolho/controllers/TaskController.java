@@ -221,7 +221,7 @@ public class TaskController implements Controller {
 
 		loadPageButton.setDisable(true);
 
-		page.handlePageDownload();
+		page.downloadPage();
 
 		loadPageButton.setDisable(false);
 

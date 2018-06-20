@@ -75,8 +75,8 @@
                   <TextField fx:id="intervalField" layoutX="309.0" layoutY="51.0" prefHeight="25.0" promptText="Interval" />
                   <MenuButton fx:id="valueSelectorButton" layoutY="137.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="128.0" styleClass="task" stylesheets="@style.css" text="Selector">
                     <items>
-                      <MenuItem mnemonicParsing="false" text="value" />
                       <MenuItem mnemonicParsing="false" text="innerHTML" />
+                      <MenuItem mnemonicParsing="false" text="value" />
                     </items>
                   </MenuButton>
                   <MenuButton fx:id="unitButton" layoutX="467.0" layoutY="51.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="93.0" styleClass="task" text="Unit">

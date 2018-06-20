@@ -66,7 +66,7 @@ public class Task {
 			this.interval = 1;
 			this.unit = TaskUnit.MINUTE;
 			this.selected = "";
-			this.selector = "value";
+			this.selector = "innerHTML";
 			this.outputFolder = new File("/");
 			this.configs = new Properties();
 			this.configs.put(conf.ENABLE_CLASS, true);

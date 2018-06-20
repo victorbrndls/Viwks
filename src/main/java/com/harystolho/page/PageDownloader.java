@@ -1,8 +1,5 @@
 package com.harystolho.page;
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,16 +10,18 @@ import org.jsoup.nodes.Element;
 
 import com.harystolho.Main;
 import com.harystolho.controllers.TaskController;
-import com.harystolho.utils.ViwksUtils;
 
 import javafx.application.Platform;
+import javafx.concurrent.Worker.State;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.web.WebView;
+import javafx.stage.Stage;
 
 public class PageDownloader {
 
 	private static final Logger logger = Logger.getLogger(PageDownloader.class.getName());
-	private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0";
 
 	private String url;
 
@@ -36,19 +35,11 @@ public class PageDownloader {
 	 * Downloads the web page, lists all the nodes and put them in the
 	 * {@link TaskController} ListView.
 	 */
-	public void handlePageDownload() {
-
-		// Download the page
-		if ((page = downloadPage()) == null) {
-			return;
-		}
-
+	private void afterPageDownload() {
 		TaskController controller = Main.getGUI().getTaskController();
 
-		// TODO it's not getting all node, fix it
 		getAllElements(page.select("head").get(0), controller);
 		getAllElements(page.select("body").get(0), controller);
-
 	}
 
 	private void getAllElements(Element e, TaskController controller) {
@@ -92,29 +83,54 @@ public class PageDownloader {
 	 * 
 	 * @return a {@link Document} containing the page.
 	 */
-	private Document downloadPage() {
+	public void downloadPage() {
 		if (url == null) {
 			showAlert("Invalid URL", "The URL is not valid");
 			logger.log(Level.INFO, "Can't download page because the URL is null");
-			return null;
+			return;
 		}
 
-		FutureTask<Document> doc = new FutureTask<Document>(() -> {
-			return Jsoup.connect(url).userAgent(USER_AGENT).get();
+		// TODO close after 15 seconds
+		Platform.runLater(() -> {
+
+			WebView view = new WebView();
+			Stage stage = new Stage();
+
+			stage.setTitle("Close this window when the page has loaded.");
+			stage.setMaxWidth(1280);
+			stage.setMaxHeight(720);
+
+			Scene sc = new Scene(view);
+			stage.setScene(sc);
+
+			view.getEngine().getLoadWorker().stateProperty().addListener((obs, oldValue, newValue) -> {
+
+				if (newValue == State.RUNNING) {
+					stage.show();
+				}
+
+				if (newValue == State.SUCCEEDED) {
+
+					Alert alert = new Alert(AlertType.CONFIRMATION);
+
+					alert.setTitle("Info");
+					alert.setContentText("Close the window below when the page has finished loading.");
+					alert.show();
+
+					stage.setOnCloseRequest((e) -> {
+						page = Jsoup
+								.parse((String) view.getEngine().executeScript("document.documentElement.outerHTML"));
+						afterPageDownload();
+					});
+
+				}
+
+			});
+
+			view.getEngine().load(url);
+
 		});
 
-		ViwksUtils.getExecutor().submit(doc);
-
-		try {
-			return doc.get(15, TimeUnit.MINUTES);
-		} catch (ExecutionException e) {
-			showAlert("Invalid URL", "The URL is not valid");
-			return null;
-		} catch (Exception e) {
-			showAlert("Error", "Something went wrong");
-			logger.log(Level.SEVERE, "Couldn't get the page from FutureTask");
-			return null;
-		}
 	}
 
 	private void showAlert(String title, String msg) {
