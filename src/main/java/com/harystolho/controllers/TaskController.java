@@ -132,11 +132,13 @@ public class TaskController implements Controller {
 		valueSelectorButton.getItems().forEach((item) -> {
 			item.setOnAction((e) -> {
 				valueSelectorButton.setText(((MenuItem) e.getTarget()).getText());
+				displayTagValue(tagList.getSelectionModel().getSelectedItem());
 			});
 		});
 
 		tagList.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newValue) -> {
-			displayTagInformation((CustomTag) newValue);
+			displayClassesAndId((CustomTag) newValue);
+			displayTagValue((CustomTag) newValue);
 		});
 
 		enableClassButton.setOnAction((e) -> {
@@ -149,12 +151,35 @@ public class TaskController implements Controller {
 
 	}
 
+	private void displayTagValue(CustomTag tag) {
+
+		if (tag == null) {
+			return;
+		}
+
+		String value = "";
+
+		switch (valueSelectorButton.getText()) {
+		case "value":
+			value = page.getDocument().select(tag.getCssSelector()).val();
+			break;
+		case "innerHTML":
+			value = page.getDocument().select(tag.getCssSelector()).text();
+			break;
+		default:
+			break;
+		}
+
+		valueText.setText(value);
+
+	}
+
 	/**
 	 * Displays information about the tag on the right pane.
 	 * 
 	 * @param tag
 	 */
-	private void displayTagInformation(CustomTag tag) {
+	private void displayClassesAndId(CustomTag tag) {
 
 		flowPane.getChildren().clear();
 
@@ -316,6 +341,9 @@ public class TaskController implements Controller {
 
 	}
 
+	/**
+	 * Filter tags using text and filter options
+	 */
 	private void filter() {
 		boolean enableClass = enableClassButton.isSelected();
 		boolean enableId = enableIdButton.isSelected();
@@ -341,12 +369,6 @@ public class TaskController implements Controller {
 						continue;
 					}
 
-					/*
-					 * if (!tag.getClasses().isEmpty()) { if (!enableClass) { temp.add(tag);
-					 * iterator.remove(); } else { if (tag.getId() != null) { if (!enableId) {
-					 * temp.add(tag); iterator.remove(); } } } } else { if (tag.getId() != null) {
-					 * if (!enableId) { temp.add(tag); iterator.remove(); } } }
-					 */
 				} else {
 					temp.add(tag);
 					iterator.remove();

@@ -126,5 +126,9 @@ public class PageDownloader {
 			alert.show();
 		});
 	}
-
+	
+	public Document getDocument() {
+		return page;
+	}
+	
 }
