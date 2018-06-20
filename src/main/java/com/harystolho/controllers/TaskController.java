@@ -326,27 +326,27 @@ public class TaskController implements Controller {
 			CustomTag tag = iterator.next();
 
 			if (tag != null) {
+
 				if (StringUtils.contains(tag.getOuterHtml(), listFilter.getText())) {
-					if (!tag.getClasses().isEmpty()) {
-						if (!enableClass) {
-							temp.add(tag);
-							iterator.remove();
-						} else {
-							if (tag.getId() != null) {
-								if (!enableId) {
-									temp.add(tag);
-									iterator.remove();
-								}
-							}
-						}
-					} else {
-						if (tag.getId() != null) {
-							if (!enableId) {
-								temp.add(tag);
-								iterator.remove();
-							}
-						}
+
+					if (!enableClass && !tag.getClasses().isEmpty()) {
+						temp.add(tag);
+						iterator.remove();
+						continue;
 					}
+
+					if (!enableId && tag.getId() != null) {
+						temp.add(tag);
+						iterator.remove();
+						continue;
+					}
+
+					/*
+					 * if (!tag.getClasses().isEmpty()) { if (!enableClass) { temp.add(tag);
+					 * iterator.remove(); } else { if (tag.getId() != null) { if (!enableId) {
+					 * temp.add(tag); iterator.remove(); } } } } else { if (tag.getId() != null) {
+					 * if (!enableId) { temp.add(tag); iterator.remove(); } } }
+					 */
 				} else {
 					temp.add(tag);
 					iterator.remove();
@@ -361,26 +361,25 @@ public class TaskController implements Controller {
 
 			if (tag != null) {
 				if (StringUtils.contains(tag.getOuterHtml(), listFilter.getText())) {
-					if (!tag.getClasses().isEmpty()) {
-						if (!enableClass) {
-							tagList.getItems().add(tag);
-							iterator.remove();
-						} else {
-							if (tag.getId() != null) {
-								if (!enableId) {
-									tagList.getItems().add(tag);
-									iterator.remove();
-								}
-							}
-						}
-					} else {
-						if (tag.getId() != null) {
-							if (!enableId) {
-								tagList.getItems().add(tag);
-								iterator.remove();
-							}
-						}
+
+					if (enableClass && !tag.getClasses().isEmpty()) {
+						tagList.getItems().add(tag);
+						iterator.remove();
+						continue;
 					}
+
+					if (tag.getClasses().isEmpty() && tag.getId() == null) {
+						tagList.getItems().add(tag);
+						iterator.remove();
+						continue;
+					}
+
+					if (enableId && tag.getId() != null) {
+						tagList.getItems().add(tag);
+						iterator.remove();
+						continue;
+					}
+
 				}
 			}
 		}

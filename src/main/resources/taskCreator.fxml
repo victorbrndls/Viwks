@@ -123,8 +123,8 @@
          <children>
             <Pane prefHeight="69.0" prefWidth="500.0">
                <children>
-                  <ToggleButton fx:id="enableClassButton" layoutY="2.0" mnemonicParsing="false" text="Eneble Classes" />
-                  <ToggleButton fx:id="enableIdButton" layoutX="102.0" layoutY="2.0" mnemonicParsing="false" text="Enable IDs" />
+                  <ToggleButton fx:id="enableClassButton" layoutY="2.0" mnemonicParsing="false" text="Show Classes" />
+                  <ToggleButton fx:id="enableIdButton" layoutX="102.0" layoutY="2.0" mnemonicParsing="false" text="Show Id" />
                   <Button disable="true" layoutX="348.0" mnemonicParsing="false" text="Use Visual Selector">
                      <tooltip>
                         <Tooltip text="WIP" />
