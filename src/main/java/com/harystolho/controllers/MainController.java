@@ -1,6 +1,7 @@
 package com.harystolho.controllers;
 
 import java.io.File;
+import java.util.ListIterator;
 
 import com.harystolho.Main;
 import com.harystolho.application.ViwksGUI;
@@ -160,6 +161,10 @@ public class MainController implements Controller {
 		TaskUtils.saveTask(currentTask);
 	}
 
+	public void setCurrentTask(Task task) {
+		currentTask = task;
+	}
+
 	/**
 	 * Loads task from file and displays it
 	 */
@@ -170,6 +175,21 @@ public class MainController implements Controller {
 		TaskUtils.loadTasks().forEach((item) -> {
 			taskList.getItems().add(item);
 		});
+
+		// Selects the task that was selected before.
+		if (currentTask == null) {
+			return;
+		}
+
+		ListIterator<Task> iterator = taskList.getItems().listIterator();
+		while (iterator.hasNext()) {
+			Task t = iterator.next();
+			if (currentTask.getId() == t.getId()) {
+				taskList.getSelectionModel().select(t);
+				break;
+			}
+		}
+
 	}
 
 	private void openTaskWindow() {

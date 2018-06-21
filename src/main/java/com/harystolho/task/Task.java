@@ -66,11 +66,11 @@ public class Task {
 			this.interval = 1;
 			this.unit = TaskUnit.MINUTE;
 			this.selected = "";
-			this.selector = "value";
+			this.selector = "innerHTML";
 			this.outputFolder = new File("/");
 			this.configs = new Properties();
-			this.configs.put(conf.ENABLE_CLASS, false);
-			this.configs.put(conf.ENABLE_ID, false);
+			this.configs.put(conf.ENABLE_CLASS, true);
+			this.configs.put(conf.ENABLE_ID, true);
 		}
 
 		public int getId() {
@@ -151,12 +151,6 @@ public class Task {
 	public URL getURL() {
 		if (url != null) {
 			return url;
-		}
-
-		try {
-			return new URL("https://");
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
 		}
 		return null;
 	}

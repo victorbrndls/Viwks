@@ -68,14 +68,16 @@
    <top>
       <MenuBar prefHeight="14.0" prefWidth="1150.0" BorderPane.alignment="CENTER">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
+          <Menu mnemonicParsing="false" text="Edit">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
+              <MenuItem mnemonicParsing="false" text="Configurations" />
+                  <MenuItem mnemonicParsing="false" text="Close" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="About">
             <items>
               <MenuItem mnemonicParsing="false" text="Check new Updates" />
+                  <MenuItem mnemonicParsing="false" text="About" />
             </items>
           </Menu>
         </menus>

@@ -2,20 +2,34 @@ package com.harystolho.controllers;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.harystolho.Main;
-import com.harystolho.application.PageDownloader;
+import com.harystolho.page.CustomTag;
+import com.harystolho.page.PageDownloader;
 import com.harystolho.task.Task;
 import com.harystolho.task.TaskUnit;
 import com.harystolho.task.TaskUtils;
+import com.harystolho.utils.ViwksUtils;
+
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.text.Text;
 
 public class TaskController implements Controller {
@@ -27,6 +41,9 @@ public class TaskController implements Controller {
 	private Button loadPageButton;
 
 	@FXML
+	private FlowPane flowPane;
+
+	@FXML
 	private TextField selectorField;
 
 	@FXML
@@ -36,7 +53,7 @@ public class TaskController implements Controller {
 	private MenuButton unitButton;
 
 	@FXML
-	private Label valueText;
+	private TextArea valueText;
 
 	@FXML
 	private MenuButton valueSelectorButton;
@@ -57,14 +74,23 @@ public class TaskController implements Controller {
 	private ToggleButton enableIdButton;
 
 	@FXML
-	private ListView<?> list;
+	private TextField listFilter;
+
+	@FXML
+	private ListView<CustomTag> tagList;
+	private List<CustomTag> temp;
+
+	private String filterText = "";
+
+	private Task currentTask;
 
 	private PageDownloader page;
-	private Task currentTask;
 
 	@FXML
 	void initialize() {
 		Main.getGUI().setTaskController(this);
+
+		temp = new ArrayList<>();
 
 		if (currentTask == null)
 			currentTask = createDefaultTask();
@@ -79,30 +105,23 @@ public class TaskController implements Controller {
 	 */
 	private void loadEventListeners() {
 
-		closeButton.setOnMouseClicked((e) -> {
-			Main.getGUI().getMainController().loadTasks();
-			Main.getGUI().setTaskController(null);
-			Main.getGUI().setScene(Main.getGUI().getMainScene());
-		});
+		filterKeyPress();
+		closeMouseClick();
 
 		saveButton.setOnMouseClicked((e) -> {
 
 			updateTask();
-
 			TaskUtils.saveTask(currentTask);
+
+			ViwksUtils.addCssEffect(saveButton, "button-pressed", 250);
+
 		});
 
 		loadPageButton.setOnMouseClicked((e) -> {
 
-			if (isURLValid(urlField.getText())) {
-				page = new PageDownloader(urlField.getText());
-			} else {
-				// TODO show pop up
-				return;
-			}
-
-			page.downloadPage();
-
+			ViwksUtils.getExecutor().submit(() -> {
+				downloadPage();
+			});
 		});
 
 		unitButton.getItems().forEach((item) -> {
@@ -114,9 +133,115 @@ public class TaskController implements Controller {
 		valueSelectorButton.getItems().forEach((item) -> {
 			item.setOnAction((e) -> {
 				valueSelectorButton.setText(((MenuItem) e.getTarget()).getText());
+				displayTagValue(tagList.getSelectionModel().getSelectedItem());
 			});
 		});
 
+		tagList.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newValue) -> {
+			displayClassesAndId((CustomTag) newValue);
+			displayTagValue((CustomTag) newValue);
+			displayCssSelector((CustomTag) newValue);
+		});
+
+		enableClassButton.setOnAction((e) -> {
+			filter();
+		});
+
+		enableIdButton.setOnAction((e) -> {
+			filter();
+		});
+
+	}
+
+	/**
+	 * Displays this tahg's value or innerHTML
+	 * 
+	 * @param tag
+	 */
+	private void displayTagValue(CustomTag tag) {
+
+		if (tag == null) {
+			return;
+		}
+
+		String value = "";
+
+		switch (valueSelectorButton.getText()) {
+		case "value":
+			value = page.getDocument().select(tag.getCssSelector()).val();
+			break;
+		case "innerHTML":
+			value = page.getDocument().select(tag.getCssSelector()).text();
+			break;
+		default:
+			break;
+		}
+
+		valueText.setText(value);
+
+	}
+
+	/**
+	 * Displays information about this tag's classes and id
+	 * 
+	 * @param tag
+	 */
+	private void displayClassesAndId(CustomTag tag) {
+
+		flowPane.getChildren().clear();
+
+		if (tag == null) {
+			return;
+		}
+
+		for (String s : tag.getClasses()) {
+			Label text = new Label(s);
+			text.getStyleClass().add("flowPaneText");
+			flowPane.getChildren().add(text);
+		}
+
+		Label text = new Label(tag.getId());
+		text.getStyleClass().add("flowPaneText");
+		flowPane.getChildren().add(text);
+
+	}
+
+	private void displayCssSelector(CustomTag tag) {
+		selectorField.setText(tag.getCssSelector());
+	}
+
+	/**
+	 * Downloads a web page using the URL in the {@link #urlField}
+	 */
+	private void downloadPage() {
+
+		Platform.runLater(() -> {
+			tagList.getItems().clear();
+		});
+
+		// TODO check if the URL is valid
+		if (isURLValid(urlField.getText())) {
+			page = new PageDownloader(urlField.getText());
+		} else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setHeaderText("Invalid URL");
+			alert.setContentText(urlField.getText() + " is not a valid URL");
+			alert.showAndWait();
+			return;
+		}
+
+		loadPageButton.setDisable(true);
+
+		page.downloadPage();
+
+		loadPageButton.setDisable(false);
+
+	}
+
+	public void addTagToSelectorList(CustomTag tag) {
+		Platform.runLater(() -> {
+			tagList.getItems().add(tag);
+		});
 	}
 
 	/**
@@ -191,11 +316,13 @@ public class TaskController implements Controller {
 	public void loadTask(Task task) {
 
 		if (task.getURL() != null) {
-			urlField.setText(currentTask.getURL().toString());
-			// Moves the cursor to the end of the string
-			urlField.selectEnd();
-			urlField.forward();
+			urlField.setText(task.getURL().toString());
+		} else {
+			urlField.setText("https://");
 		}
+		// Moves the cursor to the end of the string
+		urlField.selectEnd();
+		urlField.forward();
 
 		taskNameField.setText(task.getName());
 
@@ -225,6 +352,92 @@ public class TaskController implements Controller {
 
 	}
 
+	/**
+	 * Filter tags using text and filter options
+	 */
+	private void filter() {
+		boolean enableClass = enableClassButton.isSelected();
+		boolean enableId = enableIdButton.isSelected();
+
+		ListIterator<CustomTag> iterator = tagList.getItems().listIterator();
+
+		while (iterator.hasNext()) {
+			CustomTag tag = iterator.next();
+
+			if (tag != null) {
+
+				if (StringUtils.contains(tag.getOuterHtml(), listFilter.getText())) {
+
+					if (!enableClass && !tag.getClasses().isEmpty()) {
+						temp.add(tag);
+						iterator.remove();
+						continue;
+					}
+
+					if (!enableId && tag.getId() != null) {
+						temp.add(tag);
+						iterator.remove();
+						continue;
+					}
+
+				} else {
+					temp.add(tag);
+					iterator.remove();
+				}
+			}
+		}
+
+		iterator = temp.listIterator();
+
+		while (iterator.hasNext()) {
+			CustomTag tag = iterator.next();
+
+			if (tag != null) {
+				if (StringUtils.contains(tag.getOuterHtml(), listFilter.getText())) {
+
+					if (enableClass && !tag.getClasses().isEmpty()) {
+						tagList.getItems().add(tag);
+						iterator.remove();
+						continue;
+					}
+
+					if (tag.getClasses().isEmpty() && tag.getId() == null) {
+						tagList.getItems().add(tag);
+						iterator.remove();
+						continue;
+					}
+
+					if (enableId && tag.getId() != null) {
+						tagList.getItems().add(tag);
+						iterator.remove();
+						continue;
+					}
+
+				}
+			}
+		}
+	}
+
+	private void closeMouseClick() {
+		closeButton.setOnMouseClicked((e) -> {
+			Main.getGUI().getMainController().setCurrentTask(currentTask);
+			// Loads new tasks
+			Main.getGUI().getMainController().loadTasks();
+			// Sets this Controller to null
+			Main.getGUI().setTaskController(null);
+			// Change to main Scene
+			Main.getGUI().setScene(Main.getGUI().getMainScene());
+		});
+	}
+
+	// TODO improve the filter to use only 1 list, if possible, try using LinkedList
+	private void filterKeyPress() {
+		listFilter.setOnKeyPressed((e) -> {
+			filter();
+		});
+
+	}
+
 	public void setTask(Task task) {
 		currentTask = task;
 	}
@@ -240,7 +453,7 @@ public class TaskController implements Controller {
 	 * @return true if it's valid
 	 */
 	private boolean isURLValid(String url) {
-		return true; // TODO check if the url is valid
+		return true;
 	}
 
 }
