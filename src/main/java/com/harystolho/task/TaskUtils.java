@@ -112,6 +112,7 @@ public class TaskUtils {
 		json.put("url", task.getURL());
 		json.put("interval", task.getInterval());
 		json.put("unit", task.getUnit().getName());
+		json.put("tagSelector", task.getSelected());
 		json.put("selector", task.getSelector());
 		json.put("output", task.getOutputFolder());
 
@@ -176,6 +177,9 @@ public class TaskUtils {
 			task.setUnit(TaskUnit.MINUTE);
 			break;
 		}
+
+		// Tag Selector
+		task.setSelected(json.getString("tagSelector"));
 
 		// Selector
 		task.setSelector(json.getString("selector"));

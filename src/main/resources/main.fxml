@@ -32,12 +32,7 @@
                   <Font size="15.0" />
                </font>
             </Button>
-            <Button fx:id="deleteButton" layoutX="850.0" layoutY="378.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="73.0" text="Delete">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Button>
-            <Button fx:id="saveButton" layoutX="927.0" layoutY="378.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="61.0" text="Save">
+            <Button fx:id="deleteButton" layoutX="903.0" layoutY="378.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="73.0" text="Delete">
                <font>
                   <Font size="15.0" />
                </font>
@@ -53,7 +48,7 @@
                   <Font size="13.0" />
                </font>
             </Button>
-            <Button fx:id="editButton" layoutX="784.0" layoutY="378.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="62.0" text="Edit">
+            <Button fx:id="editButton" layoutX="837.0" layoutY="378.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="62.0" text="Edit">
                <font>
                   <Font size="15.0" />
                </font>

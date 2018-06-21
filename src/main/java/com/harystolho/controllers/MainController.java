@@ -37,9 +37,6 @@ public class MainController implements Controller {
 	private Button deleteButton;
 
 	@FXML
-	private Button saveButton;
-
-	@FXML
 	private Text intervalField;
 
 	@FXML

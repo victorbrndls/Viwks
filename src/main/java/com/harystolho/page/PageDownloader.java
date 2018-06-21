@@ -1,5 +1,6 @@
 package com.harystolho.page;
 
+import java.net.URI;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,13 +37,11 @@ public class PageDownloader {
 	 * {@link TaskController} ListView.
 	 */
 	private void afterPageDownload() {
-		TaskController controller = Main.getGUI().getTaskController();
-
-		getAllElements(page.select("head").get(0), controller);
-		getAllElements(page.select("body").get(0), controller);
+		getAllElements(page.select("head").get(0));
+		getAllElements(page.select("body").get(0));
 	}
 
-	private void getAllElements(Element e, TaskController controller) {
+	private void getAllElements(Element e) {
 
 		if (filterTag(e.tagName())) {
 			CustomTag tag = new CustomTag(handleHtmlTag(e.outerHtml()), e.cssSelector());
@@ -51,12 +50,12 @@ public class PageDownloader {
 			// Add element's id
 			tag.setId(e.id());
 			// Adds the element to the list
-			controller.addTagToSelectorList(tag);
+			Main.getGUI().getTaskController().addTagToSelectorList(tag);
 		}
 
 		if (e.children().size() > 0) {
 			for (Element child : e.children()) {
-				getAllElements(child, controller);
+				getAllElements(child);
 			}
 		}
 
@@ -79,14 +78,21 @@ public class PageDownloader {
 	}
 
 	/**
-	 * Downloads the web page and return a {@link Document} containing it.
+	 * Creates a {@link WebView} object and loads the webpage using {@link #url} and
+	 * waits for the user to close the window.
 	 * 
-	 * @return a {@link Document} containing the page.
 	 */
 	public void downloadPage() {
 		if (url == null) {
 			showAlert("Invalid URL", "The URL is not valid");
 			logger.log(Level.INFO, "Can't download page because the URL is null");
+			return;
+		}
+
+		try {
+			new URI(url);
+		} catch (Exception e) {
+			showAlert("Invalid URL", "The URL provided is not valid.");
 			return;
 		}
 
