@@ -9,6 +9,7 @@
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.ToggleButton?>
@@ -71,15 +72,15 @@
             <Separator id="separator" prefHeight="12.0" prefWidth="642.0" />
             <Pane prefHeight="238.0" prefWidth="536.0">
                <children>
-                  <TextField fx:id="selectorField" layoutY="51.0" prefHeight="25.0" prefWidth="148.0" promptText="Id" />
-                  <TextField fx:id="intervalField" layoutX="309.0" layoutY="51.0" prefHeight="25.0" promptText="Interval" />
-                  <MenuButton fx:id="valueSelectorButton" layoutY="137.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="128.0" styleClass="task" stylesheets="@style.css" text="Selector">
+                  <TextField fx:id="selectorField" layoutY="51.0" prefHeight="25.0" prefWidth="309.0" promptText="Tag Selector" />
+                  <TextField fx:id="intervalField" layoutX="309.0" layoutY="14.0" prefHeight="25.0" promptText="Interval" />
+                  <MenuButton fx:id="valueSelectorButton" layoutY="202.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="128.0" styleClass="task" stylesheets="@style.css" text="Selector">
                     <items>
                       <MenuItem mnemonicParsing="false" text="innerHTML" />
                       <MenuItem mnemonicParsing="false" text="value" />
                     </items>
                   </MenuButton>
-                  <MenuButton fx:id="unitButton" layoutX="467.0" layoutY="51.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="93.0" styleClass="task" text="Unit">
+                  <MenuButton fx:id="unitButton" layoutX="467.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="93.0" styleClass="task" text="Unit">
                     <items>
                       <MenuItem mnemonicParsing="false" text="Second(s)" />
                       <MenuItem mnemonicParsing="false" text="Minute(s)" />
@@ -87,12 +88,12 @@
                         <MenuItem mnemonicParsing="false" text="Day(s)" />
                     </items>
                   </MenuButton>
-                  <Label fx:id="valueText" layoutY="95.0" prefHeight="25.0" prefWidth="524.0" text="-" />
-                  <TextField id="taskName" fx:id="taskNameField" layoutY="7.0" prefHeight="25.0" promptText="Task Name">
+                  <TextField id="taskName" fx:id="taskNameField" layoutY="7.0" prefHeight="25.0" prefWidth="227.0" promptText="Task Name">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </TextField>
+                  <TextArea fx:id="valueText" editable="false" layoutX="1.0" layoutY="100.0" prefHeight="94.0" prefWidth="574.0" stylesheets="@style.css" wrapText="true" />
                </children>
             </Pane>
             <Pane prefHeight="155.0" prefWidth="536.0">

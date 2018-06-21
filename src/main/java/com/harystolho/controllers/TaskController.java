@@ -26,6 +26,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.FlowPane;
@@ -52,7 +53,7 @@ public class TaskController implements Controller {
 	private MenuButton unitButton;
 
 	@FXML
-	private Label valueText;
+	private TextArea valueText;
 
 	@FXML
 	private MenuButton valueSelectorButton;
@@ -139,6 +140,7 @@ public class TaskController implements Controller {
 		tagList.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newValue) -> {
 			displayClassesAndId((CustomTag) newValue);
 			displayTagValue((CustomTag) newValue);
+			displayCssSelector((CustomTag) newValue);
 		});
 
 		enableClassButton.setOnAction((e) -> {
@@ -151,6 +153,11 @@ public class TaskController implements Controller {
 
 	}
 
+	/**
+	 * Displays this tahg's value or innerHTML
+	 * 
+	 * @param tag
+	 */
 	private void displayTagValue(CustomTag tag) {
 
 		if (tag == null) {
@@ -175,7 +182,7 @@ public class TaskController implements Controller {
 	}
 
 	/**
-	 * Displays information about the tag on the right pane.
+	 * Displays information about this tag's classes and id
 	 * 
 	 * @param tag
 	 */
@@ -197,6 +204,10 @@ public class TaskController implements Controller {
 		text.getStyleClass().add("flowPaneText");
 		flowPane.getChildren().add(text);
 
+	}
+
+	private void displayCssSelector(CustomTag tag) {
+		selectorField.setText(tag.getCssSelector());
 	}
 
 	/**

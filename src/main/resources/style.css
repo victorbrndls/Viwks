@@ -128,6 +128,14 @@
     -fx-padding: 7px;
 }
 
+.text-area, .viewport, .viewport .content{
+    -fx-background-color: transparent;
+}
+
+.text-area{
+    -fx-text-fill: white;
+}
+
 #taskNameField {
     -fx-font-size: 22px;
     -fx-font-weight: bold;
