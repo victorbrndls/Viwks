@@ -4,11 +4,13 @@ import java.io.File;
 import java.util.ListIterator;
 
 import com.harystolho.Main;
-import com.harystolho.application.ViwksGUI;
+import com.harystolho.ViwksGUI;
 import com.harystolho.task.Task;
 import com.harystolho.task.TaskUtils;
+import com.harystolho.utils.RunUtils;
 import com.harystolho.utils.ViwksUtils;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -57,6 +59,8 @@ public class MainController implements Controller {
 	private File outputFolder;
 	private Task currentTask;
 
+	private Thread runningThread;
+
 	@FXML
 	void initialize() {
 		Main.getGUI().setMainController(this);
@@ -72,6 +76,7 @@ public class MainController implements Controller {
 			DirectoryChooser chooser = new DirectoryChooser();
 			chooser.setTitle("Choose a output folder");
 
+			// TODO if the directory was already chosen, open it
 			// TODO check if the directory is valid
 			outputFolder = chooser.showDialog(Main.getGUI().getWindow());
 
@@ -108,6 +113,22 @@ public class MainController implements Controller {
 
 		});
 
+		runButton.setOnAction((e) -> {
+
+			if (runningThread != null) {
+				runningThread.interrupt();
+				runningThread = null;
+			} else {
+				if (currentTask != null) {
+					runningThread = new Thread(RunUtils.getRunnable(currentTask));
+					runningThread.start();
+				}
+			}
+
+			updateRunButton();
+
+		});
+
 		openTaskButton.setOnMouseClicked((e) -> {
 			openTaskWindow();
 		});
@@ -119,6 +140,16 @@ public class MainController implements Controller {
 			}
 		});
 
+	}
+
+	public void updateRunButton() {
+		Platform.runLater(() -> {
+			if (runningThread == null) {
+				runButton.setText("Run");
+			} else {
+				runButton.setText("Stop");
+			}
+		});
 	}
 
 	/**
@@ -187,6 +218,10 @@ public class MainController implements Controller {
 			}
 		}
 
+	}
+
+	public void setRunningThread(Thread t) {
+		runningThread = t;
 	}
 
 	private void openTaskWindow() {

@@ -1,6 +1,8 @@
 package com.harystolho.page;
 
 import java.net.URI;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,8 +19,11 @@ import javafx.concurrent.Worker.State;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.paint.Color;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.util.Callback;
 
 public class PageDownloader {
 
@@ -77,12 +82,18 @@ public class PageDownloader {
 		return StringUtils.splitPreserveAllTokens(outerHtml, ">")[0] + ">";
 	}
 
+	public void downloadPage(boolean show) {
+		downloadPage(show, (param) -> {
+		});
+	}
+
 	/**
 	 * Creates a {@link WebView} object and loads the webpage using {@link #url} and
 	 * waits for the user to close the window.
 	 * 
 	 */
-	public void downloadPage() {
+	public void downloadPage(boolean show, Consumer<Document> callback) {
+
 		if (url == null) {
 			showAlert("Invalid URL", "The URL is not valid");
 			logger.log(Level.INFO, "Can't download page because the URL is null");
@@ -107,28 +118,40 @@ public class PageDownloader {
 			stage.setMaxHeight(720);
 
 			Scene sc = new Scene(view);
+
 			stage.setScene(sc);
 
 			view.getEngine().getLoadWorker().stateProperty().addListener((obs, oldValue, newValue) -> {
 
 				if (newValue == State.RUNNING) {
-					stage.show();
+					if (show) {
+						stage.show();
+					} else {
+						stage.show();
+						stage.toBack();
+					}
 				}
 
 				if (newValue == State.SUCCEEDED) {
+					// If the window is shown to the user
+					if (show) {
+						Alert alert = new Alert(AlertType.CONFIRMATION);
 
-					Alert alert = new Alert(AlertType.CONFIRMATION);
+						alert.setTitle("Info");
+						alert.setContentText("Close the window below when the page has finished loading.");
+						alert.show();
 
-					alert.setTitle("Info");
-					alert.setContentText("Close the window below when the page has finished loading.");
-					alert.show();
-
-					stage.setOnCloseRequest((e) -> {
+						stage.setOnCloseRequest((e) -> {
+							page = Jsoup.parse(
+									(String) view.getEngine().executeScript("document.documentElement.outerHTML"));
+							afterPageDownload();
+						});
+					} else {
+						stage.close();
 						page = Jsoup
 								.parse((String) view.getEngine().executeScript("document.documentElement.outerHTML"));
-						afterPageDownload();
-					});
-
+						callback.accept(page);
+					}
 				}
 
 			});

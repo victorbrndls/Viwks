@@ -1,13 +1,13 @@
-package com.harystolho.application;
+package com.harystolho;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Level;
 
-import com.harystolho.Main;
 import com.harystolho.controllers.Controller;
 import com.harystolho.controllers.MainController;
 import com.harystolho.controllers.TaskController;
+import com.harystolho.utils.RunUtils;
 import com.harystolho.utils.ViwksUtils;
 
 import javafx.application.Application;
@@ -53,6 +53,7 @@ public class ViwksGUI extends Application {
 
 		window.setOnCloseRequest((e) -> {
 			ViwksUtils.close();
+			RunUtils.running = false;
 		});
 
 		window.show();
@@ -148,8 +149,7 @@ public class ViwksGUI extends Application {
 
 	/**
 	 * Method used to start the application from another class. It will call the
-	 * {@link com.harystolho.application.ViwksGUI#start(Stage) start(Stage stage}
-	 * method.
+	 * {@link com.harystolho.ViwksGUI#start(Stage) start(Stage stage} method.
 	 * 
 	 * @param args
 	 */

@@ -164,6 +164,7 @@ public class TaskController implements Controller {
 
 		String value = "";
 
+		// Edit RunUtils when you edit here
 		switch (valueSelectorButton.getText()) {
 		case "value":
 			value = page.getDocument().select(tag.getCssSelector()).val();
@@ -230,7 +231,7 @@ public class TaskController implements Controller {
 
 		loadPageButton.setDisable(true);
 
-		page.downloadPage();
+		page.downloadPage(true);
 
 		loadPageButton.setDisable(false);
 

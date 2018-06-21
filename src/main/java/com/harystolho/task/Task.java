@@ -163,6 +163,10 @@ public class Task {
 		return interval;
 	}
 
+	public long getIntervalMilli() {
+		return interval * unit.multiplier;
+	}
+
 	public void setInterval(int interval) {
 		this.interval = interval;
 	}
