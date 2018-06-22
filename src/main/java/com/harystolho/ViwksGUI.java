@@ -42,7 +42,7 @@ public class ViwksGUI extends Application {
 		Main.setGUI(this);
 
 		window = stage;
-		window.setTitle("Viwks");
+		window.setTitle("Viwks Application");
 
 		window.setWidth(1200);
 		window.setHeight(700);
