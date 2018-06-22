@@ -80,8 +80,10 @@ public class RunUtils {
 	private static void processPage(Document doc, Task task) {
 		Elements els = doc.select(task.getSelected());
 
-		if (els.size() <= 0)
+		if (els.size() <= 0) {
+			logger.log(Level.WARNING, "Couldn't find specified tag.");
 			return;
+		}
 
 		Element el = els.get(0);
 
