@@ -11,10 +11,8 @@ local.properties
 .project
 .recommenders
 .idea
-<<<<<<< HEAD
-=======
 tasks/
->>>>>>> dev
+tests/
 
 # External tool builders
 .externalToolBuilders/
