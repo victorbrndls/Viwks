@@ -17,6 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.harystolho.controllers.MainController;
 import com.harystolho.task.Task.conf;
 
 public class TaskUtils {
@@ -24,9 +25,11 @@ public class TaskUtils {
 	private static final Logger logger = Logger.getLogger(TaskUtils.class.getName());
 
 	/**
-	 * Saves a task to the folder
+	 * Saves a task to the folder chosen by the user in the {@link MainController
+	 * main screen}
 	 * 
 	 * @param task
+	 *            The task to be saved
 	 */
 	public static void saveTask(Task task) {
 
@@ -40,17 +43,17 @@ public class TaskUtils {
 			fos.flush();
 
 		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
+			logger.log(Level.SEVERE, "There is not a file with that name.");
 		} catch (IOException e1) {
-			e1.printStackTrace();
+			logger.log(Level.SEVERE, "Couldn't write to that file.");
 		}
 
 	}
 
 	/**
-	 * Loads .json files from the /task folder and creates {@link Task} from it
+	 * Loads JSON files from the /task folder and creates {@link Task} objects
 	 * 
-	 * @return {@link Task}
+	 * @return A list containing all the {@link Task tasks} loaded
 	 */
 	public static List<Task> loadTasks() {
 		List<Task> tasks = new ArrayList<>();
@@ -62,12 +65,11 @@ public class TaskUtils {
 		File[] taskFile = new File("tasks/").listFiles();
 
 		for (File f : taskFile) {
-			// logger.log(Level.INFO, "Loading file: " + f.getName());
 
 			StringBuffer sb = new StringBuffer();
 
 			int l;
-			byte[] b = new byte[1024];
+			byte[] b = new byte[2048];
 
 			try (FileInputStream fis = new FileInputStream(f)) {
 
@@ -78,9 +80,9 @@ public class TaskUtils {
 				tasks.add(createTaskFromJSON(new JSONObject(sb.toString())));
 
 			} catch (FileNotFoundException e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE, "There is not a file with that name.");
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE, "Couldn't write to that file.");
 			}
 
 		}
@@ -89,7 +91,7 @@ public class TaskUtils {
 	}
 
 	/**
-	 * Deletes a task from the folder
+	 * Deletes a task from the /tasks folder
 	 * 
 	 * @param task
 	 */
@@ -109,11 +111,12 @@ public class TaskUtils {
 
 		json.put("id", task.getId());
 		json.put("name", task.getName());
-		json.put("url", task.getURL());
+		json.put("url", task.getURL().toString());
 		json.put("interval", task.getInterval());
 		json.put("unit", task.getUnit().getName());
+		json.put("tagSelector", task.getSelected());
 		json.put("selector", task.getSelector());
-		json.put("output", task.getOutputFolder());
+		json.put("output", task.getOutputFolder().toString());
 
 		JSONArray jsonConfigs = new JSONArray();
 
@@ -135,10 +138,11 @@ public class TaskUtils {
 	}
 
 	/**
-	 * Takes a {@link JSONObject} and turns it into a {@link Task}
+	 * Takes a {@link JSONObject} and turns it into a {@link Task} object
 	 * 
 	 * @param json
-	 *            {@link JSONObject
+	 *            the {@link JSONObject} to be used
+	 * 
 	 * @return {@link Task}
 	 */
 	public static Task createTaskFromJSON(JSONObject json) {
@@ -152,7 +156,6 @@ public class TaskUtils {
 			task.setURL(new URL(json.getString("url")));
 		} catch (MalformedURLException | JSONException e) {
 			logger.log(Level.SEVERE, "Couldn't create URL from:" + json.getString("url"));
-			// TODO set url to default
 		}
 
 		// Interval
@@ -160,22 +163,25 @@ public class TaskUtils {
 
 		// Unit
 		switch (json.getString("unit")) {
-		case "Second(s):":
-			task.setUnit(TaskUnit.SECOND);
+		case "Second(s)":
+			task.setUnit(TaskUnits.SECOND);
 			break;
 		case "Minute(s)":
-			task.setUnit(TaskUnit.MINUTE);
+			task.setUnit(TaskUnits.MINUTE);
 			break;
 		case "Hour(s)":
-			task.setUnit(TaskUnit.HOUR);
+			task.setUnit(TaskUnits.HOUR);
 			break;
 		case "Day(s)":
-			task.setUnit(TaskUnit.DAY);
+			task.setUnit(TaskUnits.DAY);
 			break;
 		default:
-			task.setUnit(TaskUnit.MINUTE);
+			task.setUnit(TaskUnits.MINUTE);
 			break;
 		}
+
+		// Tag Selector
+		task.setSelected(json.getString("tagSelector"));
 
 		// Selector
 		task.setSelector(json.getString("selector"));
@@ -191,8 +197,6 @@ public class TaskUtils {
 
 		task.getConfigs().put(Task.conf.ENABLE_CLASS, enableClass.getBoolean("enabled"));
 		task.getConfigs().put(Task.conf.ENABLE_ID, enableId.getBoolean("enabled"));
-
-		// TODO write tests
 
 		return task;
 	}

@@ -1,5 +1,8 @@
 package com.harystolho.page;
 
+import java.net.URI;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,8 +19,11 @@ import javafx.concurrent.Worker.State;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.paint.Color;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.util.Callback;
 
 public class PageDownloader {
 
@@ -36,13 +42,11 @@ public class PageDownloader {
 	 * {@link TaskController} ListView.
 	 */
 	private void afterPageDownload() {
-		TaskController controller = Main.getGUI().getTaskController();
-
-		getAllElements(page.select("head").get(0), controller);
-		getAllElements(page.select("body").get(0), controller);
+		getAllElements(page.select("head").get(0));
+		getAllElements(page.select("body").get(0));
 	}
 
-	private void getAllElements(Element e, TaskController controller) {
+	private void getAllElements(Element e) {
 
 		if (filterTag(e.tagName())) {
 			CustomTag tag = new CustomTag(handleHtmlTag(e.outerHtml()), e.cssSelector());
@@ -51,12 +55,12 @@ public class PageDownloader {
 			// Add element's id
 			tag.setId(e.id());
 			// Adds the element to the list
-			controller.addTagToSelectorList(tag);
+			Main.getGUI().getTaskController().addTagToSelectorList(tag);
 		}
 
 		if (e.children().size() > 0) {
 			for (Element child : e.children()) {
-				getAllElements(child, controller);
+				getAllElements(child);
 			}
 		}
 
@@ -78,15 +82,28 @@ public class PageDownloader {
 		return StringUtils.splitPreserveAllTokens(outerHtml, ">")[0] + ">";
 	}
 
+	public void downloadPage(boolean show) {
+		downloadPage(show, (param) -> {
+		});
+	}
+
 	/**
-	 * Downloads the web page and return a {@link Document} containing it.
+	 * Creates a {@link WebView} object and loads the webpage using {@link #url} and
+	 * waits for the user to close the window.
 	 * 
-	 * @return a {@link Document} containing the page.
 	 */
-	public void downloadPage() {
+	public void downloadPage(boolean show, Consumer<Document> callback) {
+
 		if (url == null) {
 			showAlert("Invalid URL", "The URL is not valid");
 			logger.log(Level.INFO, "Can't download page because the URL is null");
+			return;
+		}
+
+		try {
+			new URI(url);
+		} catch (Exception e) {
+			showAlert("Invalid URL", "The URL provided is not valid.");
 			return;
 		}
 
@@ -101,28 +118,43 @@ public class PageDownloader {
 			stage.setMaxHeight(720);
 
 			Scene sc = new Scene(view);
+
 			stage.setScene(sc);
 
 			view.getEngine().getLoadWorker().stateProperty().addListener((obs, oldValue, newValue) -> {
 
 				if (newValue == State.RUNNING) {
-					stage.show();
+					if (show) {
+						stage.show();
+					} else {
+						stage.show();
+						stage.toBack();
+					}
 				}
 
 				if (newValue == State.SUCCEEDED) {
+					// If the window is shown to the user
+					if (show) {
+						Alert alert = new Alert(AlertType.CONFIRMATION);
 
-					Alert alert = new Alert(AlertType.CONFIRMATION);
+						alert.setTitle("Info");
+						alert.setContentText("Close the window below when the page has finished loading.");
+						alert.show();
 
-					alert.setTitle("Info");
-					alert.setContentText("Close the window below when the page has finished loading.");
-					alert.show();
+						stage.setOnCloseRequest((e) -> {
+							page = Jsoup.parse(
+									(String) view.getEngine().executeScript("document.documentElement.outerHTML"));
+							afterPageDownload();
+						});
+					} else {
 
-					stage.setOnCloseRequest((e) -> {
+						// TODO add custom delay
+
+						stage.close();
 						page = Jsoup
 								.parse((String) view.getEngine().executeScript("document.documentElement.outerHTML"));
-						afterPageDownload();
-					});
-
+						callback.accept(page);
+					}
 				}
 
 			});

@@ -4,11 +4,13 @@ import java.io.File;
 import java.util.ListIterator;
 
 import com.harystolho.Main;
-import com.harystolho.application.ViwksGUI;
+import com.harystolho.ViwksGUI;
 import com.harystolho.task.Task;
 import com.harystolho.task.TaskUtils;
+import com.harystolho.utils.RunUtils;
 import com.harystolho.utils.ViwksUtils;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -37,9 +39,6 @@ public class MainController implements Controller {
 	private Button deleteButton;
 
 	@FXML
-	private Button saveButton;
-
-	@FXML
 	private Text intervalField;
 
 	@FXML
@@ -47,6 +46,9 @@ public class MainController implements Controller {
 
 	@FXML
 	private Button changeFolderButton;
+
+	@FXML
+	private TextField customDelayField;
 
 	@FXML
 	private Button editButton;
@@ -59,6 +61,8 @@ public class MainController implements Controller {
 
 	private File outputFolder;
 	private Task currentTask;
+
+	private Thread runningThread;
 
 	@FXML
 	void initialize() {
@@ -75,7 +79,7 @@ public class MainController implements Controller {
 			DirectoryChooser chooser = new DirectoryChooser();
 			chooser.setTitle("Choose a output folder");
 
-			// TODO check if the directory is valid
+			// TODO if the directory was already chosen, open it
 			outputFolder = chooser.showDialog(Main.getGUI().getWindow());
 
 			if (outputFolder != null) {
@@ -111,6 +115,22 @@ public class MainController implements Controller {
 
 		});
 
+		runButton.setOnAction((e) -> {
+
+			if (runningThread != null) {
+				runningThread.interrupt();
+				runningThread = null;
+			} else {
+				if (currentTask != null) {
+					runningThread = new Thread(RunUtils.getRunnable(currentTask));
+					runningThread.start();
+				}
+			}
+
+			updateRunButton();
+
+		});
+
 		openTaskButton.setOnMouseClicked((e) -> {
 			openTaskWindow();
 		});
@@ -122,6 +142,16 @@ public class MainController implements Controller {
 			}
 		});
 
+	}
+
+	public void updateRunButton() {
+		Platform.runLater(() -> {
+			if (runningThread == null) {
+				runButton.setText("Run");
+			} else {
+				runButton.setText("Stop");
+			}
+		});
 	}
 
 	/**
@@ -192,8 +222,14 @@ public class MainController implements Controller {
 
 	}
 
+	public void setRunningThread(Thread t) {
+		runningThread = t;
+	}
+
+	/**
+	 * Opens a new Window where you can edit a {@link Task}
+	 */
 	private void openTaskWindow() {
-		// TODO This may cause a memory leak problem
 		Scene taskScene = new Scene(ViwksGUI.loadFXML("taskCreator.fxml"));
 		taskScene.getStylesheets().add(ViwksUtils.RESOURCES + "style.css");
 

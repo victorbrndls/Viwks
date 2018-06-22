@@ -1,13 +1,12 @@
-package com.harystolho.application;
+package com.harystolho;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Level;
 
-import com.harystolho.Main;
-import com.harystolho.controllers.Controller;
 import com.harystolho.controllers.MainController;
 import com.harystolho.controllers.TaskController;
+import com.harystolho.utils.RunUtils;
 import com.harystolho.utils.ViwksUtils;
 
 import javafx.application.Application;
@@ -17,7 +16,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * Creates the GUI interface for this application
+ * This is the main class for this application. It creates the GUI and displays
+ * it. It also holds references to other <code>Controllers</code>
  * 
  * @author Harystolho
  *
@@ -36,7 +36,9 @@ public class ViwksGUI extends Application {
 	 * Creates a new window and loads the main components.
 	 */
 	private void loadGUI(Stage stage) {
-		// I'm not sure why I need to do this but if I don't it doesn't work.
+
+		// I need to do this here because when it calls start() it creates a
+		// new instance of this class.
 		Main.setGUI(this);
 
 		window = stage;
@@ -53,6 +55,7 @@ public class ViwksGUI extends Application {
 
 		window.setOnCloseRequest((e) -> {
 			ViwksUtils.close();
+			RunUtils.running = false;
 		});
 
 		window.show();
@@ -81,7 +84,7 @@ public class ViwksGUI extends Application {
 	}
 
 	/**
-	 * Loads a FXML class from the file.
+	 * Loads a FXML view from the file.
 	 * 
 	 * @param name
 	 *            the name of the FXML file you want to load.
@@ -148,8 +151,7 @@ public class ViwksGUI extends Application {
 
 	/**
 	 * Method used to start the application from another class. It will call the
-	 * {@link com.harystolho.application.ViwksGUI#start(Stage) start(Stage stage}
-	 * method.
+	 * {@link com.harystolho.ViwksGUI#start(Stage) start(Stage stage} method.
 	 * 
 	 * @param args
 	 */

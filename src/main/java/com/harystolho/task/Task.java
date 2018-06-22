@@ -28,7 +28,7 @@ public class Task {
 	private String name;
 	private URL url;
 	private int interval;
-	private TaskUnit unit;
+	private TaskUnits unit;
 	private String selected;
 	private String selector;
 	private File outputFolder;
@@ -46,7 +46,7 @@ public class Task {
 		private String name;
 		private URL url;
 		private int interval;
-		private TaskUnit unit;
+		private TaskUnits unit;
 		private String selected;
 		private String selector;
 		private File outputFolder;
@@ -64,7 +64,7 @@ public class Task {
 			this.name = "Task #" + id;
 			// url is not set
 			this.interval = 1;
-			this.unit = TaskUnit.MINUTE;
+			this.unit = TaskUnits.MINUTE;
 			this.selected = "";
 			this.selector = "innerHTML";
 			this.outputFolder = new File("/");
@@ -92,7 +92,7 @@ public class Task {
 			return this;
 		}
 
-		public TaskBuilder setUnit(TaskUnit unit) {
+		public TaskBuilder setUnit(TaskUnits unit) {
 			this.unit = unit;
 			return this;
 		}
@@ -163,15 +163,19 @@ public class Task {
 		return interval;
 	}
 
+	public long getIntervalMilli() {
+		return interval * unit.multiplier;
+	}
+
 	public void setInterval(int interval) {
 		this.interval = interval;
 	}
 
-	public TaskUnit getUnit() {
+	public TaskUnits getUnit() {
 		return unit;
 	}
 
-	public void setUnit(TaskUnit unit) {
+	public void setUnit(TaskUnits unit) {
 		this.unit = unit;
 	}
 
@@ -209,6 +213,31 @@ public class Task {
 
 	public String toString() {
 		return this.name;
+	}
+
+	/**
+	 * This implementation doesn't compare the URL's
+	 */
+	@Override
+	public boolean equals(Object obj) {
+
+		if (obj == null)
+			return false;
+
+		if (!(obj instanceof Task)) {
+			return false;
+		}
+
+		Task task = (Task) obj;
+
+		if (this.getName() != task.getName() || this.getId() != task.getId() || this.getInterval() != task.getInterval()
+				|| this.getUnit() != task.getUnit() || this.getSelected() != task.getSelected()
+				|| this.getSelector() != task.getSelector()
+				|| this.getOutputFolder().toString() != task.getOutputFolder().toString()) {
+			return false;
+		}
+
+		return true;
 	}
 
 }

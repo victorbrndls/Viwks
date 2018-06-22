@@ -12,7 +12,7 @@ import com.harystolho.Main;
 import com.harystolho.page.CustomTag;
 import com.harystolho.page.PageDownloader;
 import com.harystolho.task.Task;
-import com.harystolho.task.TaskUnit;
+import com.harystolho.task.TaskUnits;
 import com.harystolho.task.TaskUtils;
 import com.harystolho.utils.ViwksUtils;
 
@@ -22,7 +22,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
@@ -30,7 +29,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.text.Text;
 
 public class TaskController implements Controller {
 
@@ -154,7 +152,7 @@ public class TaskController implements Controller {
 	}
 
 	/**
-	 * Displays this tahg's value or innerHTML
+	 * Displays this tag's value or innerHTML
 	 * 
 	 * @param tag
 	 */
@@ -164,20 +162,21 @@ public class TaskController implements Controller {
 			return;
 		}
 
-		String value = "";
+		String displayValue = "";
 
+		// Edit RunUtils when you edit here
 		switch (valueSelectorButton.getText()) {
 		case "value":
-			value = page.getDocument().select(tag.getCssSelector()).val();
+			displayValue = page.getDocument().select(tag.getCssSelector()).val();
 			break;
 		case "innerHTML":
-			value = page.getDocument().select(tag.getCssSelector()).text();
+			displayValue = page.getDocument().select(tag.getCssSelector()).text();
 			break;
 		default:
 			break;
 		}
 
-		valueText.setText(value);
+		valueText.setText(displayValue);
 
 	}
 
@@ -232,12 +231,17 @@ public class TaskController implements Controller {
 
 		loadPageButton.setDisable(true);
 
-		page.downloadPage();
+		page.downloadPage(true);
 
 		loadPageButton.setDisable(false);
 
 	}
 
+	/**
+	 * Adds the tag to the list on the left side of the screen
+	 * 
+	 * @param tag
+	 */
 	public void addTagToSelectorList(CustomTag tag) {
 		Platform.runLater(() -> {
 			tagList.getItems().add(tag);
@@ -275,19 +279,19 @@ public class TaskController implements Controller {
 
 	}
 
-	private TaskUnit getUnitButtonUnit() {
+	private TaskUnits getUnitButtonUnit() {
 
 		switch (unitButton.getText()) {
 		case "Second(s)":
-			return TaskUnit.SECOND;
+			return TaskUnits.SECOND;
 		case "Minute(s)":
-			return TaskUnit.MINUTE;
+			return TaskUnits.MINUTE;
 		case "Hour(s)":
-			return TaskUnit.HOUR;
+			return TaskUnits.HOUR;
 		case "Day(s)":
-			return TaskUnit.DAY;
+			return TaskUnits.DAY;
 		default:
-			return TaskUnit.MINUTE;
+			return TaskUnits.MINUTE;
 		}
 
 	}
@@ -421,9 +425,9 @@ public class TaskController implements Controller {
 	private void closeMouseClick() {
 		closeButton.setOnMouseClicked((e) -> {
 			Main.getGUI().getMainController().setCurrentTask(currentTask);
-			// Loads new tasks
+			// Loads new tasks in the main stage
 			Main.getGUI().getMainController().loadTasks();
-			// Sets this Controller to null
+			// Sets this Controller's reference to null
 			Main.getGUI().setTaskController(null);
 			// Change to main Scene
 			Main.getGUI().setScene(Main.getGUI().getMainScene());

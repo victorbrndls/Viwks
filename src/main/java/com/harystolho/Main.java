@@ -1,6 +1,5 @@
 package com.harystolho;
 
-import com.harystolho.application.ViwksGUI;
 import com.harystolho.utils.ViwksUtils;
 
 /**
