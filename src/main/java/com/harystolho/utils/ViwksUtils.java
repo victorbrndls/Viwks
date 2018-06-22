@@ -23,7 +23,7 @@ import javafx.scene.Parent;
 
 public class ViwksUtils {
 
-	public static final String RESOURCES = "file:src/main/resources/";
+	private static final String VERSION = "1.0";
 
 	private static Logger logger;
 	private static ExecutorService executor;
@@ -61,8 +61,13 @@ public class ViwksUtils {
 				element.getStyleClass().remove(cssClass);
 			}
 		});
+
 	}
 
+	/**
+	 * Tries to load the configuration file, if it can't fine one, it creates a new
+	 * one and loads it.
+	 */
 	public static void loadConfiguration() {
 
 		File config = new File("configs");
@@ -87,8 +92,21 @@ public class ViwksUtils {
 		}
 	}
 
+	/**
+	 * Creates a new configuration file and saves it.
+	 * 
+	 * @param config
+	 *            the configuration file
+	 */
 	private static void createAndSaveConfiguration(File config) {
 
+		configuration.setProperty("version", VERSION);
+
+		saveConfiguration(config);
+
+	}
+
+	private static void saveConfiguration(File config) {
 		try {
 			configuration.store(new FileOutputStream(config), "");
 		} catch (FileNotFoundException e) {
@@ -96,7 +114,6 @@ public class ViwksUtils {
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "An exception occured when saving the configuration file.");
 		}
-
 	}
 
 	public static Logger getLogger() {
@@ -107,8 +124,13 @@ public class ViwksUtils {
 		return executor;
 	}
 
+	public static Properties getConfiguration() {
+		return configuration;
+	}
+
 	public static void close() {
 		executor.shutdown();
+		saveConfiguration(new File("configs"));
 	}
 
 }
