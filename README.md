@@ -10,7 +10,7 @@ An Application to get data from websites periodically. You can creates task obje
 * Runs on background
 
 ## Downloads
-[Viwks-1.0](https://github.com/Harystolho/Viwks/releases/tag/untagged-ee0df6d444ca9c69ec05)
+[Viwks-1.0](https://github.com/Harystolho/Viwks/releases/tag/v1.0)
 
 ## Contributing
 Feel free to contribute to this project.
