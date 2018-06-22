@@ -49,7 +49,7 @@ public class ViwksGUI extends Application {
 
 		// Creates the main menu scene
 		mainScene = createMainScene();
-		mainScene.getStylesheets().add(ViwksUtils.RESOURCES + "style.css");
+		mainScene.getStylesheets().add(ClassLoader.getSystemClassLoader().getResource("style.css").toString());
 
 		setScene(mainScene);
 
@@ -99,9 +99,9 @@ public class ViwksGUI extends Application {
 
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			p = loader.load(new URL(ViwksUtils.RESOURCES + name));
+			p = loader.load(ClassLoader.getSystemClassLoader().getResource(name));
 		} catch (IOException e) {
-			ViwksUtils.getLogger().log(Level.SEVERE, "Couldn't load the " + name + ".fxml file");
+			ViwksUtils.getLogger().log(Level.SEVERE, "Couldn't load the " + name + " file");
 		}
 
 		if (p == null) {

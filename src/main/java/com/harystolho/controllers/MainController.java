@@ -231,7 +231,7 @@ public class MainController implements Controller {
 	 */
 	private void openTaskWindow() {
 		Scene taskScene = new Scene(ViwksGUI.loadFXML("taskCreator.fxml"));
-		taskScene.getStylesheets().add(ViwksUtils.RESOURCES + "style.css");
+		taskScene.getStylesheets().add(ClassLoader.getSystemClassLoader().getResource("style.css").toString());
 
 		Main.getGUI().setScene(taskScene);
 
