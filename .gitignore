@@ -12,6 +12,7 @@ local.properties
 .recommenders
 .idea
 tasks/
+tests/
 
 # External tool builders
 .externalToolBuilders/
