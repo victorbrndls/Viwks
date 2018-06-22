@@ -13,9 +13,10 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		// Initializes the logger and a thread pool
+		// Initializes some components
 		ViwksUtils.init();
-
+		ViwksUtils.loadConfiguration();
+		
 		// Creates a GUI instance
 		viwks = new ViwksGUI();
 		// Initialize the GUI
