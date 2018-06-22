@@ -13,6 +13,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -46,6 +47,9 @@ public class ViwksGUI extends Application {
 
 		window.setWidth(1200);
 		window.setHeight(700);
+		
+		// Loads Logo
+		window.getIcons().add(new Image(ClassLoader.getSystemClassLoader().getResourceAsStream("logo.jpeg")));
 
 		// Creates the main menu scene
 		mainScene = createMainScene();
