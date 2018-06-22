@@ -164,19 +164,19 @@ public class TaskUtils {
 		// Unit
 		switch (json.getString("unit")) {
 		case "Second(s)":
-			task.setUnit(TaskUnit.SECOND);
+			task.setUnit(TaskUnits.SECOND);
 			break;
 		case "Minute(s)":
-			task.setUnit(TaskUnit.MINUTE);
+			task.setUnit(TaskUnits.MINUTE);
 			break;
 		case "Hour(s)":
-			task.setUnit(TaskUnit.HOUR);
+			task.setUnit(TaskUnits.HOUR);
 			break;
 		case "Day(s)":
-			task.setUnit(TaskUnit.DAY);
+			task.setUnit(TaskUnits.DAY);
 			break;
 		default:
-			task.setUnit(TaskUnit.MINUTE);
+			task.setUnit(TaskUnits.MINUTE);
 			break;
 		}
 

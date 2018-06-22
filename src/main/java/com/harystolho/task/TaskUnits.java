@@ -6,7 +6,7 @@ package com.harystolho.task;
  * @author Harystolho
  *
  */
-public enum TaskUnit {
+public enum TaskUnits {
 
 	SECOND(1000, "Second(s)"), MINUTE(60 * 1000, "Minute(s)"), HOUR(60 * 60 * 1000, "Hour(s)"), DAY(24 * 60 * 60 * 100,
 			"Hour(s)");
@@ -14,7 +14,7 @@ public enum TaskUnit {
 	int multiplier;
 	String name;
 
-	TaskUnit(int multiplier, String name) {
+	TaskUnits(int multiplier, String name) {
 		this.multiplier = multiplier;
 		this.name = name;
 	}

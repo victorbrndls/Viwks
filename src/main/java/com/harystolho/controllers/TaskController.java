@@ -12,7 +12,7 @@ import com.harystolho.Main;
 import com.harystolho.page.CustomTag;
 import com.harystolho.page.PageDownloader;
 import com.harystolho.task.Task;
-import com.harystolho.task.TaskUnit;
+import com.harystolho.task.TaskUnits;
 import com.harystolho.task.TaskUtils;
 import com.harystolho.utils.ViwksUtils;
 
@@ -152,7 +152,7 @@ public class TaskController implements Controller {
 	}
 
 	/**
-	 * Displays this tahg's value or innerHTML
+	 * Displays this tag's value or innerHTML
 	 * 
 	 * @param tag
 	 */
@@ -162,21 +162,21 @@ public class TaskController implements Controller {
 			return;
 		}
 
-		String value = "";
+		String displayValue = "";
 
 		// Edit RunUtils when you edit here
 		switch (valueSelectorButton.getText()) {
 		case "value":
-			value = page.getDocument().select(tag.getCssSelector()).val();
+			displayValue = page.getDocument().select(tag.getCssSelector()).val();
 			break;
 		case "innerHTML":
-			value = page.getDocument().select(tag.getCssSelector()).text();
+			displayValue = page.getDocument().select(tag.getCssSelector()).text();
 			break;
 		default:
 			break;
 		}
 
-		valueText.setText(value);
+		valueText.setText(displayValue);
 
 	}
 
@@ -279,19 +279,19 @@ public class TaskController implements Controller {
 
 	}
 
-	private TaskUnit getUnitButtonUnit() {
+	private TaskUnits getUnitButtonUnit() {
 
 		switch (unitButton.getText()) {
 		case "Second(s)":
-			return TaskUnit.SECOND;
+			return TaskUnits.SECOND;
 		case "Minute(s)":
-			return TaskUnit.MINUTE;
+			return TaskUnits.MINUTE;
 		case "Hour(s)":
-			return TaskUnit.HOUR;
+			return TaskUnits.HOUR;
 		case "Day(s)":
-			return TaskUnit.DAY;
+			return TaskUnits.DAY;
 		default:
-			return TaskUnit.MINUTE;
+			return TaskUnits.MINUTE;
 		}
 
 	}
