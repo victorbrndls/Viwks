@@ -114,8 +114,8 @@ public class TaskUtils {
 		json.put("url", task.getURL().toString());
 		json.put("interval", task.getInterval());
 		json.put("unit", task.getUnit().getName());
-		json.put("tagSelector", task.getSelected());
-		json.put("selector", task.getSelector());
+		json.put("cssSelector", task.getCssSelector());
+		json.put("displaySelector", task.getDisplaySelector());
 		json.put("output", task.getOutputFolder().toString());
 
 		JSONArray jsonConfigs = new JSONArray();
@@ -181,10 +181,10 @@ public class TaskUtils {
 		}
 
 		// Tag Selector
-		task.setSelected(json.getString("tagSelector"));
+		task.setCssSelector(json.getString("cssSelector"));
 
 		// Selector
-		task.setSelector(json.getString("selector"));
+		task.setDisplaySelector(json.getString("displaySelector"));
 
 		// Output Folder
 		task.setOutputFolder(new File(json.getString("output")));

@@ -107,7 +107,6 @@ public class PageDownloader {
 			return;
 		}
 
-		// TODO close after 15 seconds
 		Platform.runLater(() -> {
 
 			WebView view = new WebView();

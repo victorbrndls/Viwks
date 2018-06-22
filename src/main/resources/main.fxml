@@ -54,9 +54,9 @@
                </font>
             </Button>
             <Label layoutX="352.0" layoutY="190.0" text="Output Folder" />
-            <Label fx:id="taskNameField" layoutX="348.0" layoutY="17.0" text="#Task Name" />
+            <Label fx:id="taskNameField" layoutX="348.0" layoutY="17.0" />
             <Label layoutX="348.0" layoutY="72.0" text="Interval" />
-            <Label fx:id="unitField" layoutX="421.0" layoutY="97.0" text="Second(s)" />
+            <Label fx:id="unitField" layoutX="421.0" layoutY="97.0" />
             <TextField fx:id="customDelayField" layoutX="351.0" layoutY="260.0" prefHeight="29.0" prefWidth="93.0" promptText="Custom Delay " />
          </children>
       </Pane>
@@ -66,14 +66,14 @@
         <menus>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
-              <MenuItem mnemonicParsing="false" text="Configurations" />
-                  <MenuItem mnemonicParsing="false" text="Close" />
+              <MenuItem fx:id="configurationButton" mnemonicParsing="false" text="Configurations" />
+                  <MenuItem fx:id="closeButton" mnemonicParsing="false" text="Close" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="About">
             <items>
-              <MenuItem mnemonicParsing="false" text="Check new Updates" />
-                  <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem fx:id="updateButton" mnemonicParsing="false" text="Check new Updates" />
+                  <MenuItem fx:id="aboutButton" mnemonicParsing="false" text="About" />
             </items>
           </Menu>
         </menus>

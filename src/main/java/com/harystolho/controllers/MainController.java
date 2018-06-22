@@ -16,10 +16,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class MainController implements Controller {
 
@@ -59,6 +62,18 @@ public class MainController implements Controller {
 	@FXML
 	private Label unitField;
 
+	@FXML
+	private MenuItem configurationButton;
+
+	@FXML
+	private MenuItem closeButton;
+
+	@FXML
+	private MenuItem updateButton;
+
+	@FXML
+	private MenuItem aboutButton;
+
 	private File outputFolder;
 	private Task currentTask;
 
@@ -75,7 +90,7 @@ public class MainController implements Controller {
 
 	private void loadEventListeners() {
 
-		changeFolderButton.setOnMouseClicked((e) -> {
+		changeFolderButton.setOnAction((e) -> {
 			DirectoryChooser chooser = new DirectoryChooser();
 			chooser.setTitle("Choose a output folder");
 
@@ -91,13 +106,13 @@ public class MainController implements Controller {
 		editButton.setOnAction((e) -> {
 
 			if (currentTask != null) {
-				openTaskWindow();
+				openTaskEditor();
 				Main.getGUI().getTaskController().loadTask(currentTask);
 			}
 
 		});
 
-		deleteButton.setOnMouseClicked((e) -> {
+		deleteButton.setOnAction((e) -> {
 			if (currentTask != null) {
 				TaskUtils.deleteTask(currentTask);
 				currentTask = null;
@@ -131,8 +146,8 @@ public class MainController implements Controller {
 
 		});
 
-		openTaskButton.setOnMouseClicked((e) -> {
-			openTaskWindow();
+		openTaskButton.setOnAction((e) -> {
+			openTaskEditor();
 		});
 
 		taskList.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newValue) -> {
@@ -140,6 +155,14 @@ public class MainController implements Controller {
 				currentTask = (Task) newValue;
 				updateTaskDisplay(currentTask);
 			}
+		});
+
+		closeButton.setOnAction((e) -> {
+			Main.getGUI().getWindow().close();
+		});
+
+		updateButton.setOnAction((e) -> {
+			checkUpdates();
 		});
 
 	}
@@ -226,10 +249,24 @@ public class MainController implements Controller {
 		runningThread = t;
 	}
 
+	private void checkUpdates() {
+
+		Stage stage = new Stage();
+		stage.initModality(Modality.APPLICATION_MODAL);
+
+		Scene scene = new Scene(ViwksGUI.loadFXML("update.fxml"));
+		scene.getStylesheets().add(ClassLoader.getSystemResource("style.css").toString());
+
+		stage.setScene(scene);
+
+		stage.show();
+
+	}
+
 	/**
 	 * Opens a new Window where you can edit a {@link Task}
 	 */
-	private void openTaskWindow() {
+	private void openTaskEditor() {
 		Scene taskScene = new Scene(ViwksGUI.loadFXML("taskCreator.fxml"));
 		taskScene.getStylesheets().add(ClassLoader.getSystemClassLoader().getResource("style.css").toString());
 

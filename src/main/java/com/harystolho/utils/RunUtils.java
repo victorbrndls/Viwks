@@ -78,7 +78,7 @@ public class RunUtils {
 	 * @param task
 	 */
 	private static void processPage(Document doc, Task task) {
-		Elements els = doc.select(task.getSelected());
+		Elements els = doc.select(task.getCssSelector());
 
 		if (els.size() <= 0) {
 			logger.log(Level.WARNING, "Couldn't find specified tag.");
@@ -89,7 +89,7 @@ public class RunUtils {
 
 		String result = "";
 
-		switch (task.getSelector()) {
+		switch (task.getDisplaySelector()) {
 		case "innerHTML":
 			result = el.text();
 			break;

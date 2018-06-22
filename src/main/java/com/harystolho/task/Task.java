@@ -1,13 +1,9 @@
 package com.harystolho.task;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
 import java.util.Random;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  * Class to store information about a Task.
@@ -29,8 +25,8 @@ public class Task {
 	private URL url;
 	private int interval;
 	private TaskUnits unit;
-	private String selected;
-	private String selector;
+	private String cssSelector;
+	private String displaySelector;
 	private File outputFolder;
 	Properties configs;
 
@@ -47,8 +43,8 @@ public class Task {
 		private URL url;
 		private int interval;
 		private TaskUnits unit;
-		private String selected;
-		private String selector;
+		private String cssSelector;
+		private String displaySelector;
 		private File outputFolder;
 		Properties configs;
 
@@ -62,11 +58,11 @@ public class Task {
 		public TaskBuilder(int id) {
 			this.id = id;
 			this.name = "Task #" + id;
-			// url is not set
+			// URL is not set
 			this.interval = 1;
 			this.unit = TaskUnits.MINUTE;
-			this.selected = "";
-			this.selector = "innerHTML";
+			this.cssSelector = "";
+			this.displaySelector = "innerHTML";
 			this.outputFolder = new File("/");
 			this.configs = new Properties();
 			this.configs.put(conf.ENABLE_CLASS, true);
@@ -97,13 +93,13 @@ public class Task {
 			return this;
 		}
 
-		public TaskBuilder setSelected(String selected) {
-			this.selected = selected;
+		public TaskBuilder setCssSelector(String selected) {
+			this.cssSelector = selected;
 			return this;
 		}
 
-		public TaskBuilder setSelector(String selector) {
-			this.selector = selector;
+		public TaskBuilder setDisplaySelector(String selector) {
+			this.displaySelector = selector;
 			return this;
 		}
 
@@ -126,8 +122,8 @@ public class Task {
 			task.url = this.url;
 			task.interval = this.interval;
 			task.unit = this.unit;
-			task.selected = this.selected;
-			task.selector = this.selector;
+			task.cssSelector = this.cssSelector;
+			task.displaySelector = this.displaySelector;
 			task.outputFolder = this.outputFolder;
 			task.configs = this.configs;
 
@@ -179,20 +175,20 @@ public class Task {
 		this.unit = unit;
 	}
 
-	public String getSelected() {
-		return this.selected;
+	public String getCssSelector() {
+		return this.cssSelector;
 	}
 
-	public void setSelected(String selected) {
-		this.selected = selected;
+	public void setCssSelector(String selected) {
+		this.cssSelector = selected;
 	}
 
-	public String getSelector() {
-		return selector;
+	public String getDisplaySelector() {
+		return displaySelector;
 	}
 
-	public void setSelector(String selector) {
-		this.selector = selector;
+	public void setDisplaySelector(String selector) {
+		this.displaySelector = selector;
 	}
 
 	public File getOutputFolder() {
@@ -231,8 +227,8 @@ public class Task {
 		Task task = (Task) obj;
 
 		if (this.getName() != task.getName() || this.getId() != task.getId() || this.getInterval() != task.getInterval()
-				|| this.getUnit() != task.getUnit() || this.getSelected() != task.getSelected()
-				|| this.getSelector() != task.getSelector()
+				|| this.getUnit() != task.getUnit() || this.getCssSelector() != task.getCssSelector()
+				|| this.getDisplaySelector() != task.getDisplaySelector()
 				|| this.getOutputFolder().toString() != task.getOutputFolder().toString()) {
 			return false;
 		}

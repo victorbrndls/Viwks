@@ -47,8 +47,8 @@ public class ViwksGUI extends Application {
 
 		window.setWidth(1200);
 		window.setHeight(700);
-		
-		// Loads Logo
+
+		// Loads the logo
 		window.getIcons().add(new Image(ClassLoader.getSystemClassLoader().getResourceAsStream("logo.jpeg")));
 
 		// Creates the main menu scene

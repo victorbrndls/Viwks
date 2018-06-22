@@ -260,10 +260,10 @@ public class TaskController implements Controller {
 		}
 
 		currentTask.setName(taskNameField.getText());
-		currentTask.setSelected(selectorField.getText());
+		currentTask.setCssSelector(selectorField.getText());
 		currentTask.setInterval(Integer.valueOf(intervalField.getText()));
 		currentTask.setUnit(getUnitButtonUnit());
-		currentTask.setSelector(valueSelectorButton.getText());
+		currentTask.setDisplaySelector(valueSelectorButton.getText());
 
 		if (enableClassButton.isSelected()) {
 			currentTask.getConfigs().put(Task.conf.ENABLE_CLASS, true);
@@ -330,15 +330,15 @@ public class TaskController implements Controller {
 
 		taskNameField.setText(task.getName());
 
-		selectorField.setText(task.getSelected());
+		selectorField.setText(task.getCssSelector());
 
-		valueSelectorButton.setText(task.getSelector());
+		valueSelectorButton.setText(task.getDisplaySelector());
 
 		intervalField.setText(task.getInterval() + "");
 
 		unitButton.setText(task.getUnit().getName());
 
-		valueSelectorButton.setText(task.getSelector());
+		valueSelectorButton.setText(task.getDisplaySelector());
 
 		if ((boolean) task.getConfigs().get(Task.conf.ENABLE_CLASS)) {
 			enableClassButton.setSelected(true);
@@ -357,12 +357,16 @@ public class TaskController implements Controller {
 	}
 
 	/**
-	 * Filter tags using text and filter options
+	 * Filter tags using text and filter options. At the moment it uses two arrays
+	 * to store the elements, one stores the elements being displayed and the other
+	 * one the ones that don't match the filter. Every time this method is called,
+	 * it iterates over both arrays.
 	 */
 	private void filter() {
 		boolean enableClass = enableClassButton.isSelected();
 		boolean enableId = enableIdButton.isSelected();
 
+		// TODO improve the filter to use only 1 list, if possible, try using LinkedList
 		ListIterator<CustomTag> iterator = tagList.getItems().listIterator();
 
 		while (iterator.hasNext()) {
@@ -372,19 +376,21 @@ public class TaskController implements Controller {
 
 				if (StringUtils.contains(tag.getOuterHtml(), listFilter.getText())) {
 
+					// If enableClass is OFF and the tag has at least one class, then it is removed.
 					if (!enableClass && !tag.getClasses().isEmpty()) {
 						temp.add(tag);
 						iterator.remove();
 						continue;
 					}
 
+					// If enableId is OFF and the tag has an id, then it's removed.
 					if (!enableId && tag.getId() != null) {
 						temp.add(tag);
 						iterator.remove();
 						continue;
 					}
 
-				} else {
+				} else { // If it doesn't match the filter, then it's removed.
 					temp.add(tag);
 					iterator.remove();
 				}
@@ -399,18 +405,22 @@ public class TaskController implements Controller {
 			if (tag != null) {
 				if (StringUtils.contains(tag.getOuterHtml(), listFilter.getText())) {
 
+					// If enableClass is ON and the tag has at least 1 class, then it's added back
+					// to the list
 					if (enableClass && !tag.getClasses().isEmpty()) {
 						tagList.getItems().add(tag);
 						iterator.remove();
 						continue;
 					}
 
+					// If the tag has no classes and no id, it's added back to the list
 					if (tag.getClasses().isEmpty() && tag.getId() == null) {
 						tagList.getItems().add(tag);
 						iterator.remove();
 						continue;
 					}
 
+					// If enableId is ON and the tag has an id, it's added back to the list
 					if (enableId && tag.getId() != null) {
 						tagList.getItems().add(tag);
 						iterator.remove();
@@ -434,7 +444,6 @@ public class TaskController implements Controller {
 		});
 	}
 
-	// TODO improve the filter to use only 1 list, if possible, try using LinkedList
 	private void filterKeyPress() {
 		listFilter.setOnKeyPressed((e) -> {
 			filter();
