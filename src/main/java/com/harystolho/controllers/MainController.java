@@ -48,6 +48,9 @@ public class MainController implements Controller {
 	private Button changeFolderButton;
 
 	@FXML
+	private TextField customDelayField;
+
+	@FXML
 	private Button editButton;
 
 	@FXML
@@ -77,7 +80,6 @@ public class MainController implements Controller {
 			chooser.setTitle("Choose a output folder");
 
 			// TODO if the directory was already chosen, open it
-			// TODO check if the directory is valid
 			outputFolder = chooser.showDialog(Main.getGUI().getWindow());
 
 			if (outputFolder != null) {
@@ -224,8 +226,10 @@ public class MainController implements Controller {
 		runningThread = t;
 	}
 
+	/**
+	 * Opens a new Window where you can edit a {@link Task}
+	 */
 	private void openTaskWindow() {
-		// TODO This may cause a memory leak problem
 		Scene taskScene = new Scene(ViwksGUI.loadFXML("taskCreator.fxml"));
 		taskScene.getStylesheets().add(ViwksUtils.RESOURCES + "style.css");
 

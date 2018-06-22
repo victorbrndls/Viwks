@@ -10,6 +10,8 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.concurrent.Phaser;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.jsoup.helper.StringUtil;
 import org.jsoup.nodes.Document;
@@ -21,16 +23,17 @@ import com.harystolho.page.PageDownloader;
 import com.harystolho.task.Task;
 
 /**
- * TODO desbribe
+ * This class is used to access webpages and to save the selected tag in a
+ * folder.
  * 
  * @author Harystolho
  *
  */
 public class RunUtils {
 
-	public static boolean running = false;
+	private static final Logger logger = Logger.getLogger(RunUtils.class.getName());
 
-	public static Phaser phaser;
+	public static boolean running = false;
 
 	public static Runnable getRunnable(Task task) {
 		return () -> {
@@ -55,13 +58,12 @@ public class RunUtils {
 			});
 
 			try {
-				System.out.println("Sleeping");
 				Thread.sleep(task.getIntervalMilli());
 			} catch (InterruptedException e) {
 				running = false;
 				Main.getGUI().getMainController().setRunningThread(null);
 				Main.getGUI().getMainController().updateRunButton();
-				e.printStackTrace();
+				logger.log(Level.SEVERE, "Thread was interrupted.");
 			}
 
 		}
@@ -98,11 +100,11 @@ public class RunUtils {
 
 		try {
 
+			// Format: Task #1234-YYYY-MM-DD.txt
 			File file = new File(task.getOutputFolder().getPath() + "/" + task.getName() + "-" + generateFileName());
 
-			if (!file.exists()) {
+			if (!file.exists())
 				file.createNewFile();
-			}
 
 			Files.write(Paths.get(file.getPath()), (result + "\r\n").getBytes(), StandardOpenOption.APPEND);
 		} catch (IOException e) {
@@ -111,13 +113,18 @@ public class RunUtils {
 
 	}
 
+	/**
+	 * Format: YYYY-MM-DD.txt
+	 * 
+	 * @return
+	 */
 	private static String generateFileName() {
 		LocalDateTime time = LocalDateTime.now();
 		return time.getYear() + "-" + time.getMonthValue() + "-" + time.getDayOfMonth() + ".txt";
 	}
 
 	/**
-	 * When this method is called
+	 * Tells the running thread to stop. It will finish a cycle before exiting.
 	 */
 	public static void stop() {
 		running = false;

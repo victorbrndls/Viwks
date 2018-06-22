@@ -215,4 +215,29 @@ public class Task {
 		return this.name;
 	}
 
+	/**
+	 * This implementation doesn't compare the URL's
+	 */
+	@Override
+	public boolean equals(Object obj) {
+
+		if (obj == null)
+			return false;
+
+		if (!(obj instanceof Task)) {
+			return false;
+		}
+
+		Task task = (Task) obj;
+
+		if (this.getName() != task.getName() || this.getId() != task.getId() || this.getInterval() != task.getInterval()
+				|| this.getUnit() != task.getUnit() || this.getSelected() != task.getSelected()
+				|| this.getSelector() != task.getSelector()
+				|| this.getOutputFolder().toString() != task.getOutputFolder().toString()) {
+			return false;
+		}
+
+		return true;
+	}
+
 }

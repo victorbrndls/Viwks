@@ -147,6 +147,9 @@ public class PageDownloader {
 							afterPageDownload();
 						});
 					} else {
+
+						// TODO add custom delay
+
 						stage.close();
 						page = Jsoup
 								.parse((String) view.getEngine().executeScript("document.documentElement.outerHTML"));

@@ -425,9 +425,9 @@ public class TaskController implements Controller {
 	private void closeMouseClick() {
 		closeButton.setOnMouseClicked((e) -> {
 			Main.getGUI().getMainController().setCurrentTask(currentTask);
-			// Loads new tasks
+			// Loads new tasks in the main stage
 			Main.getGUI().getMainController().loadTasks();
-			// Sets this Controller to null
+			// Sets this Controller's reference to null
 			Main.getGUI().setTaskController(null);
 			// Change to main Scene
 			Main.getGUI().setScene(Main.getGUI().getMainScene());
