@@ -1,7 +1,6 @@
 package com.harystolho.controllers;
 
 import java.io.IOException;
-import java.util.Currency;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -9,6 +8,7 @@ import org.jsoup.nodes.Document;
 import com.harystolho.utils.VersionComparator;
 import com.harystolho.utils.ViwksUtils;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
@@ -40,7 +40,6 @@ public class UpdateController implements Controller {
 	void initialize() {
 
 		setCurrentVersion();
-
 		loadEventListeners();
 
 	}
@@ -52,7 +51,15 @@ public class UpdateController implements Controller {
 			checkForUpdates.setText("Checking for updates");
 			checkForUpdates.setCursor(Cursor.DEFAULT);
 
-			checkNewVersion();
+			progressBar.setProgress(0.4);
+
+			ViwksUtils.getExecutor().submit(() -> {
+				checkNewVersion();
+			});
+		});
+
+		updateButton.setOnAction((e) -> {
+
 		});
 
 	}
@@ -90,7 +97,10 @@ public class UpdateController implements Controller {
 				.split("tag/")[1].substring(1);
 		String currentVersion = ViwksUtils.getConfiguration().getProperty("version");
 
-		lastVersion.setText(ltsttVersion);
+		executeInApplicationThread(() -> {
+			lastVersion.setText(ltsttVersion);
+			progressBar.setProgress(1);
+		});
 
 		int result = vc.compare(ltsttVersion, currentVersion);
 
@@ -99,6 +109,16 @@ public class UpdateController implements Controller {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Executes the runnable object in the application thread. Use this when you
+	 * need to updates something in the UI.
+	 * 
+	 * @param runnable
+	 */
+	private void executeInApplicationThread(Runnable runnable) {
+		Platform.runLater(runnable);
 	}
 
 }
