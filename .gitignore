@@ -13,6 +13,7 @@ local.properties
 .idea
 tasks/
 tests/
+configs
 
 # External tool builders
 .externalToolBuilders/
