@@ -5,9 +5,9 @@ An Application to get data from websites periodically. You can creates task obje
 ## Features
 * Fast and light-weight.
 
-* Multiple Tasks
+* Multiple Tasks.
 
-* Runs on background
+* Runs on background.
 
 ## How to use
 

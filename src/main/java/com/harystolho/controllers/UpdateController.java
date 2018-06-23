@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.junit.internal.runners.statements.RunAfters;
 
 import com.harystolho.utils.VersionComparator;
 import com.harystolho.utils.ViwksUtils;
@@ -59,7 +60,11 @@ public class UpdateController implements Controller {
 		});
 
 		updateButton.setOnAction((e) -> {
+<<<<<<< HEAD
 
+=======
+			
+>>>>>>> 620492b... Checking for new version in another thread
 		});
 
 	}
