@@ -16,7 +16,7 @@ public class Main {
 		// Initializes some components
 		ViwksUtils.init();
 		ViwksUtils.loadConfiguration();
-		
+
 		// Creates a GUI instance
 		viwks = new ViwksGUI();
 		// Initialize the GUI

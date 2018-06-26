@@ -8,7 +8,6 @@ import com.harystolho.ViwksGUI;
 import com.harystolho.task.Task;
 import com.harystolho.task.TaskUtils;
 import com.harystolho.utils.RunUtils;
-import com.harystolho.utils.ViwksUtils;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;

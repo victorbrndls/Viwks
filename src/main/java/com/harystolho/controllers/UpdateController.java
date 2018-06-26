@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.junit.internal.runners.statements.RunAfters;
 
 import com.harystolho.utils.VersionComparator;
 import com.harystolho.utils.ViwksDownloader;

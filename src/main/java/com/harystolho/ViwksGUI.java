@@ -1,7 +1,6 @@
 package com.harystolho;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.logging.Level;
 
 import com.harystolho.controllers.MainController;
