@@ -7,11 +7,14 @@ import org.jsoup.nodes.Document;
 import org.junit.internal.runners.statements.RunAfters;
 
 import com.harystolho.utils.VersionComparator;
+import com.harystolho.utils.ViwksDownloader;
 import com.harystolho.utils.ViwksUtils;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -60,11 +63,10 @@ public class UpdateController implements Controller {
 		});
 
 		updateButton.setOnAction((e) -> {
-<<<<<<< HEAD
-
-=======
-			
->>>>>>> 620492b... Checking for new version in another thread
+			updateButton.setDisable(true);
+			ViwksUtils.getExecutor().submit(() -> {
+				ViwksDownloader.downloadNewVersion(this);
+			});
 		});
 
 	}
@@ -114,6 +116,25 @@ public class UpdateController implements Controller {
 		}
 
 		return true;
+	}
+
+	/**
+	 * This method is called when the downloads finishes, and it shows a message to
+	 * the user.
+	 */
+	public void notifyDownload() {
+		executeInApplicationThread(() -> {
+			updateButton.setDisable(true);
+
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+
+			alert.setTitle("Your update has finished.");
+			alert.setContentText(
+					"Your update has finished. Now close the application, there is a new .jar file at the current folder, "
+							+ "delete the old one and launch the new one again.");
+
+			alert.showAndWait();
+		});
 	}
 
 	/**

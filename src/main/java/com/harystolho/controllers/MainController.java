@@ -162,7 +162,7 @@ public class MainController implements Controller {
 		});
 
 		updateButton.setOnAction((e) -> {
-			checkUpdates();
+			openUpdateWindow();
 		});
 
 	}
@@ -249,7 +249,7 @@ public class MainController implements Controller {
 		runningThread = t;
 	}
 
-	private void checkUpdates() {
+	private void openUpdateWindow() {
 
 		Stage stage = new Stage();
 		stage.initModality(Modality.APPLICATION_MODAL);

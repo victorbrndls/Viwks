@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -23,7 +22,7 @@ import javafx.scene.Parent;
 
 public class ViwksUtils {
 
-	private static final String VERSION = "1.0";
+	private static final String VERSION = "1.1";
 
 	private static Logger logger;
 	private static ExecutorService executor;
@@ -40,7 +39,7 @@ public class ViwksUtils {
 	}
 
 	/**
-	 * Adds a class to an element for some time and the removes it
+	 * Adds a class to an element for some time and then removes it.
 	 * 
 	 * @param element
 	 *            The element
@@ -84,7 +83,10 @@ public class ViwksUtils {
 		}
 
 		try {
+			// This InputStream probably needs to be closed, but i'm not sure.
 			configuration.load(new FileInputStream(config));
+
+			configuration.setProperty("version", VERSION);
 		} catch (FileNotFoundException e) {
 			logger.log(Level.SEVERE, "Couldn't load configurations from file.");
 		} catch (IOException e) {
