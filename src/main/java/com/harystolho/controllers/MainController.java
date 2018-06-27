@@ -1,6 +1,11 @@
 package com.harystolho.controllers;
 
+import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ListIterator;
 
 import com.harystolho.Main;
@@ -162,6 +167,17 @@ public class MainController implements Controller {
 
 		updateButton.setOnAction((e) -> {
 			openUpdateWindow();
+		});
+
+		aboutButton.setOnAction((e) -> {
+			if (Desktop.isDesktopSupported()) {
+				Desktop desktop = Desktop.getDesktop();
+				try {
+					desktop.browse(new URI("https://github.com/Harystolho/Viwks"));
+				} catch (IOException | URISyntaxException e1) {
+					e1.printStackTrace();
+				}
+			}
 		});
 
 	}

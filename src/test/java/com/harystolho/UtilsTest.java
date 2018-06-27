@@ -23,6 +23,7 @@ public class UtilsTest {
 
 	@Test
 	public void threadPoolIsNotNull() {
+
 		assertNotNull(ViwksUtils.getExecutor());
 	}
 

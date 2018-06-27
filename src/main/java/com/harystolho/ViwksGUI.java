@@ -108,7 +108,7 @@ public class ViwksGUI extends Application {
 		}
 
 		if (p == null) {
-			throw new NullPointerException("Couldn't find the specified FXML file. file=" + name);
+			throw new NullPointerException("Couldn't find the specified FXML file. File: " + name);
 		}
 
 		return p;

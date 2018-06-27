@@ -136,6 +136,10 @@
     -fx-text-fill: white;
 }
 
+.question-mark{
+	-fx-font-size: 11px;
+}
+
 #taskNameField {
     -fx-font-size: 22px;
     -fx-font-weight: bold;
